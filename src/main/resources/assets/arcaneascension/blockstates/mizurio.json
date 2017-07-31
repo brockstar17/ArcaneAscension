@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true },
+    "model": "arcaneascension:mizurio.obj"
+  },
+  "variants": {
+    "inventory": [
+      {
+        "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": -90 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.02, 0.0 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 20 }, { "y": 90 }, { "z": -10 } ],
+            "translation": [ 0.1, 0.05, 0.0 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": -45 } ],
+            "translation": [ -0.1, -0.3, -0.0 ],
+            "scale": [ 0.2, 0.15, 0.1 ]
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": 20 }, { "y": 90 }, { "z": 0 } ],
+            "translation": [ 0.0, 0.1, 0.0 ],
+            "scale": 0.1
+          },
+          "firstperson_lefthand": {
+            "rotation": [ { "x": 20 }, { "y": -100 }, { "z": 45 } ],
+            "translation": [ -0.1, 0.0, 0.1 ],
+            "scale": 0.1
+          },
+          "ground": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": -45 } ],
+            "scale": 0.15
+          }
+        }
+      }
+    ]
+  }
+}
