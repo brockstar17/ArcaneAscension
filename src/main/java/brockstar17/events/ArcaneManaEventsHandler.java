@@ -4,11 +4,19 @@ import java.util.Random;
 
 import brockstar17.capability.ArcaneManaProvider;
 import brockstar17.capability.IArcaneMana;
+import brockstar17.network.MessageManaChange;
+import brockstar17.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * This class handles vanilla events involving Arcane Mana
+ * 
+ * @author Brockstar17
+ */
 public class ArcaneManaEventsHandler
 {
 	private Random r = new Random();
@@ -20,6 +28,7 @@ public class ArcaneManaEventsHandler
 			EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
 			IArcaneMana mana = getInstance(player);
 			mana.gainMana(r.nextInt(10) + 1);
+			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 		}
 	}
 

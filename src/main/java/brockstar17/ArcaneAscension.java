@@ -6,6 +6,7 @@ import brockstar17.capability.CapabilityHandler;
 import brockstar17.capability.IArcaneMana;
 import brockstar17.events.ArcaneManaEventsHandler;
 import brockstar17.items.ArcaneItems;
+import brockstar17.network.NetworkHandler;
 import brockstar17.proxy.CommonProxy;
 import brockstar17.utility.Log;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,6 +42,7 @@ public class ArcaneAscension
 
 		ArcaneItems.preInit();
 		proxy.preInit();
+		NetworkHandler.init();
 
 		Log.info("Pre-initialization of Arcane Ascension is complete");
 	}

@@ -13,8 +13,17 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
+/**
+ * This class defines the item mana jar. <br>
+ * When on ground the jar will display how much mana the player has.
+ * 
+ * @author Brockstar17
+ */
 public class ManaJar extends Item
 {
+
+	private boolean shouldDisplayMana;
+
 	public ManaJar(String name)
 	{
 		this.setUnlocalizedName(name);
@@ -32,7 +41,7 @@ public class ManaJar extends Item
 
 			int amount = mana.getMana(); // The amount of mana that the player has
 
-			if (!world.isRemote)
+			if (!world.isRemote) // Only output from server-side
 				Log.info("The player has " + amount + " mana"); // Log how much mana the player has.
 		}
 		else {
@@ -42,4 +51,19 @@ public class ManaJar extends Item
 
 		return super.onItemRightClick(world, player, hand);
 	}
+
+	@Override
+	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
+
+		return super.onDroppedByPlayer(item, player);
+	}
+
+	public void setShouldDisplayMana(boolean value) {
+		this.shouldDisplayMana = value;
+	}
+
+	public boolean getShouldDisplayMana() {
+		return this.shouldDisplayMana;
+	}
+
 }

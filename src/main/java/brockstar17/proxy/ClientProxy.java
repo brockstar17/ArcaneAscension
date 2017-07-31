@@ -2,6 +2,8 @@ package brockstar17.proxy;
 
 import brockstar17.Reference;
 import brockstar17.items.ArcaneItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.model.obj.OBJLoader;
 
 /**
@@ -26,6 +28,11 @@ public class ClientProxy extends CommonProxy
 
 	@Override
 	public void postInit() {
+	}
+
+	@Override
+	public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().player;
 	}
 
 }
