@@ -18,6 +18,7 @@ public class ArcaneItems
 	public static Item kazio;
 	public static Item mizurio;
 	public static Item seishinio;
+	public static Item mana_jar;
 	// End of item fields
 
 	/**
@@ -31,6 +32,7 @@ public class ArcaneItems
 		kazio = new Kazio("kazio");
 		mizurio = new Mizurio("mizurio");
 		seishinio = new Seishinio("seishinio");
+		mana_jar = new ManaJar("mana_jar");
 
 		registerItems();
 	}
@@ -51,6 +53,7 @@ public class ArcaneItems
 		GameRegistry.register(kazio);
 		GameRegistry.register(mizurio);
 		GameRegistry.register(seishinio);
+		GameRegistry.register(mana_jar);
 	}
 
 	/**
@@ -78,6 +81,7 @@ public class ArcaneItems
 		register3dModel(kazio);
 		register3dModel(mizurio);
 		register3dModel(seishinio);
+		register3dModel(mana_jar);
 	}
 
 	/**

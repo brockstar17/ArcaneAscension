@@ -1,8 +1,15 @@
 package brockstar17;
 
+import brockstar17.capability.ArcaneMana;
+import brockstar17.capability.ArcaneManaStorage;
+import brockstar17.capability.CapabilityHandler;
+import brockstar17.capability.IArcaneMana;
+import brockstar17.events.ArcaneManaEventsHandler;
 import brockstar17.items.ArcaneItems;
 import brockstar17.proxy.CommonProxy;
 import brockstar17.utility.Log;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -29,6 +36,9 @@ public class ArcaneAscension
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 
+		// Put this first because many items and spells will use mana
+		CapabilityManager.INSTANCE.register(IArcaneMana.class, new ArcaneManaStorage(), ArcaneMana.class);
+
 		ArcaneItems.preInit();
 		proxy.preInit();
 
@@ -38,8 +48,13 @@ public class ArcaneAscension
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
 
+		// Put this first because many items and spells will use mana
+		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
+
 		ArcaneItems.init();
 		proxy.init();
+
+		MinecraftForge.EVENT_BUS.register(new ArcaneManaEventsHandler());
 
 		Log.info("Initialization of Arcane Ascension is complete");
 	}
