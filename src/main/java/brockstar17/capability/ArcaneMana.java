@@ -10,6 +10,7 @@ public class ArcaneMana implements IArcaneMana
 {
 
 	private int mana;
+	private int maxMana = 100;
 
 	@Override
 	public void setMana(int amount) {
@@ -36,6 +37,12 @@ public class ArcaneMana implements IArcaneMana
 	@Override
 	public int getMana() {
 		return this.mana;
+	}
+
+	@Override
+	public int getMaxMana() {
+
+		return this.maxMana;
 	}
 
 }

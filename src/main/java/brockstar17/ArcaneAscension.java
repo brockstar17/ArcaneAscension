@@ -5,6 +5,7 @@ import brockstar17.capability.ArcaneManaStorage;
 import brockstar17.capability.CapabilityHandler;
 import brockstar17.capability.IArcaneMana;
 import brockstar17.events.ArcaneManaEventsHandler;
+import brockstar17.gui.RenderManaBar;
 import brockstar17.items.ArcaneItems;
 import brockstar17.network.NetworkHandler;
 import brockstar17.proxy.CommonProxy;
@@ -65,6 +66,8 @@ public class ArcaneAscension
 	public void postInit(FMLPostInitializationEvent e) {
 
 		proxy.postInit();
+
+		MinecraftForge.EVENT_BUS.register(new RenderManaBar());
 
 		Log.info("Post-initialization of Arcane Ascension is complete");
 	}

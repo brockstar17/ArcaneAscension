@@ -8,6 +8,7 @@ package brockstar17.capability;
  */
 public interface IArcaneMana
 {
+
 	// Set the player's mana to a certain amount
 	public void setMana(int amount);
 
@@ -22,4 +23,7 @@ public interface IArcaneMana
 
 	// Returns the amount of mana that the player has
 	public int getMana();
+
+	// Return the max mana the player can hold
+	public int getMaxMana();
 }
