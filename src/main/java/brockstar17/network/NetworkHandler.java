@@ -16,6 +16,8 @@ public class NetworkHandler
 		INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 		INSTANCE.registerMessage(MessageManaChange.class, MessageManaChange.class, 0, Side.CLIENT);
 		INSTANCE.registerMessage(MessageManaChange.class, MessageManaChange.class, 1, Side.SERVER);
+		INSTANCE.registerMessage(MessageActiveSlotChange.class, MessageActiveSlotChange.class, 2, Side.CLIENT);
+		INSTANCE.registerMessage(MessageActiveSlotChange.class, MessageActiveSlotChange.class, 3, Side.SERVER);
 	}
 
 	public static void sendToServer(IMessage message) {

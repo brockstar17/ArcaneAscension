@@ -10,10 +10,10 @@ import net.minecraftforge.common.capabilities.Capability;
 
 public class GuiManaBar extends Gui
 {
-	// private Minecraft mc;
+
 	private Capability<IArcaneMana> cmana = ArcaneManaProvider.MANA;
 
-	private static final ResourceLocation texture = new ResourceLocation("arcaneascension", "textures/gui/mana_bar.png");
+	private static final ResourceLocation texture = new ResourceLocation("arcaneascension", "textures/gui/arcane_gui.png");
 
 	public GuiManaBar(Minecraft mc)
 	{
@@ -38,14 +38,14 @@ public class GuiManaBar extends Gui
 		drawTexturedModalRect(xPos, yPos, 0, 0, 56, 9);
 		// You can keep drawing without changing anything
 		int manabarwidth = (int) (((float) mana.getMana() / mana.getMaxMana()) * 49);
-		drawTexturedModalRect(xPos + 3, yPos + 3, 0, 9, manabarwidth, 3);
+		drawTexturedModalRect(xPos + 1, yPos + 1, 0, 9, manabarwidth, 9);
 		String s = "Mana " + mana.getMana() + "/" + mana.getMaxMana();
-		yPos += 10;
+		xPos += 60;
 		mc.fontRendererObj.drawString(s, xPos + 1, yPos, 0);
 		mc.fontRendererObj.drawString(s, xPos - 1, yPos, 0);
 		mc.fontRendererObj.drawString(s, xPos, yPos + 1, 0);
 		mc.fontRendererObj.drawString(s, xPos, yPos - 1, 0);
-		mc.fontRendererObj.drawString(s, xPos, yPos, 8453920);
+		mc.fontRendererObj.drawString(s, xPos, yPos, 4353012);
 		GlStateManager.popAttrib();
 	}
 

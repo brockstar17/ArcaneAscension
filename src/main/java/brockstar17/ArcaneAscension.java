@@ -2,10 +2,13 @@ package brockstar17;
 
 import brockstar17.capability.ArcaneMana;
 import brockstar17.capability.ArcaneManaStorage;
+import brockstar17.capability.ArcaneSpellSlot;
+import brockstar17.capability.ArcaneSpellSlotStorage;
 import brockstar17.capability.CapabilityHandler;
 import brockstar17.capability.IArcaneMana;
+import brockstar17.capability.IArcaneSpellSlot;
 import brockstar17.events.ArcaneManaEventsHandler;
-import brockstar17.gui.RenderManaBar;
+import brockstar17.gui.RenderArcaneGui;
 import brockstar17.items.ArcaneItems;
 import brockstar17.network.NetworkHandler;
 import brockstar17.proxy.CommonProxy;
@@ -40,6 +43,7 @@ public class ArcaneAscension
 
 		// Put this first because many items and spells will use mana
 		CapabilityManager.INSTANCE.register(IArcaneMana.class, new ArcaneManaStorage(), ArcaneMana.class);
+		CapabilityManager.INSTANCE.register(IArcaneSpellSlot.class, new ArcaneSpellSlotStorage(), ArcaneSpellSlot.class);
 
 		ArcaneItems.preInit();
 		proxy.preInit();
@@ -67,7 +71,7 @@ public class ArcaneAscension
 
 		proxy.postInit();
 
-		MinecraftForge.EVENT_BUS.register(new RenderManaBar());
+		MinecraftForge.EVENT_BUS.register(new RenderArcaneGui());
 
 		Log.info("Post-initialization of Arcane Ascension is complete");
 	}

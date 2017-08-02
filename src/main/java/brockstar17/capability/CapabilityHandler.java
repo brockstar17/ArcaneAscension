@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CapabilityHandler
 {
 	public static final ResourceLocation MANA = new ResourceLocation(Reference.MODID, "mana");
+	public static final ResourceLocation ACTIVESPELL = new ResourceLocation(Reference.MODID, "activespell");
 
 	@SubscribeEvent
 	public void attachCapability(AttachCapabilitiesEvent.Entity e) {
@@ -17,5 +18,6 @@ public class CapabilityHandler
 			return;
 
 		e.addCapability(MANA, new ArcaneManaProvider());
+		e.addCapability(ACTIVESPELL, new ArcaneSpellSlotProvider());
 	}
 }
