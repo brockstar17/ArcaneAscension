@@ -1,4 +1,4 @@
-package brockstar17.capability.mana;
+package brockstar17.capability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

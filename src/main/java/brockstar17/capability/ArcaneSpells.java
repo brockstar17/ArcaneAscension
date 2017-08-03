@@ -1,4 +1,4 @@
-package brockstar17.capability.spells;
+package brockstar17.capability;
 
 public class ArcaneSpells implements IArcaneSpells
 {

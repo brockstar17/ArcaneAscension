@@ -1,7 +1,7 @@
 package brockstar17.network;
 
-import brockstar17.capability.spells.ArcaneSpellsProvider;
-import brockstar17.capability.spells.IArcaneSpells;
+import brockstar17.capability.ArcaneSpellsProvider;
+import brockstar17.capability.IArcaneSpells;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

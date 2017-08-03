@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 import brockstar17.Reference;
-import brockstar17.capability.spells.ArcaneSpellsProvider;
-import brockstar17.capability.spells.IArcaneSpells;
+import brockstar17.capability.ArcaneSpellsProvider;
+import brockstar17.capability.IArcaneSpells;
 import brockstar17.network.MessageAssignSpell;
 import brockstar17.network.NetworkHandler;
 import net.minecraft.client.Minecraft;
@@ -84,10 +84,7 @@ public class SpellSelectGui extends GuiScreen
 			NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), spell.getIcon2(), getSpellIcon(slotToHighlight)));
 			break;
 		case Keyboard.KEY_Y:
-			this.mc.displayGuiScreen(null);
-			break;
-		case Keyboard.KEY_E:
-			this.mc.displayGuiScreen(null);
+
 			break;
 		default:
 

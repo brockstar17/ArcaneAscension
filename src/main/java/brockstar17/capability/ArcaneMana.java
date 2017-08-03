@@ -1,4 +1,4 @@
-package brockstar17.capability.mana;
+package brockstar17.capability;
 
 /**
  * This is the implementation of the mana interface. <br>

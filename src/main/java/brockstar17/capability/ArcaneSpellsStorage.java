@@ -1,4 +1,4 @@
-package brockstar17.capability.spells;
+package brockstar17.capability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;

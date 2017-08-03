@@ -1,7 +1,7 @@
 package brockstar17.gui;
 
-import brockstar17.capability.spells.ArcaneSpellsProvider;
-import brockstar17.capability.spells.IArcaneSpells;
+import brockstar17.capability.ArcaneSpellsProvider;
+import brockstar17.capability.IArcaneSpells;
 import brockstar17.utility.Log;
 import brockstar17.utility.SpellIcons;
 import net.minecraft.client.Minecraft;

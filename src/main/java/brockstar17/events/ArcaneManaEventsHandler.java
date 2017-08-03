@@ -2,8 +2,8 @@ package brockstar17.events;
 
 import java.util.Random;
 
-import brockstar17.capability.mana.ArcaneManaProvider;
-import brockstar17.capability.mana.IArcaneMana;
+import brockstar17.capability.ArcaneManaProvider;
+import brockstar17.capability.IArcaneMana;
 import brockstar17.network.MessageManaChange;
 import brockstar17.network.NetworkHandler;
 import net.minecraft.entity.EntityLiving;
