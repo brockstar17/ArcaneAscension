@@ -1,4 +1,4 @@
-package brockstar17.capability;
+package brockstar17.capability.mana;
 
 /**
  * This is the interface for my custom player capability which allows for the storage of mana in the

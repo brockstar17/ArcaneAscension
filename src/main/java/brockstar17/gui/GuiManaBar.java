@@ -1,7 +1,7 @@
 package brockstar17.gui;
 
-import brockstar17.capability.ArcaneManaProvider;
-import brockstar17.capability.IArcaneMana;
+import brockstar17.capability.mana.ArcaneManaProvider;
+import brockstar17.capability.mana.IArcaneMana;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
