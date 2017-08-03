@@ -6,13 +6,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ArcaneSpellSlotProvider implements ICapabilitySerializable<NBTBase>
+public class ArcaneSpellsProvider implements ICapabilitySerializable<NBTBase>
 {
 
-	@CapabilityInject(IArcaneSpellSlot.class)
-	public static final Capability<IArcaneSpellSlot> ACTIVESPELL = null;
+	@CapabilityInject(IArcaneSpells.class)
+	public static final Capability<IArcaneSpells> ACTIVESPELL = null;
 
-	private IArcaneSpellSlot instance = ACTIVESPELL.getDefaultInstance();
+	private IArcaneSpells instance = ACTIVESPELL.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

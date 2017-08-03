@@ -18,6 +18,8 @@ public class NetworkHandler
 		INSTANCE.registerMessage(MessageManaChange.class, MessageManaChange.class, 1, Side.SERVER);
 		INSTANCE.registerMessage(MessageActiveSlotChange.class, MessageActiveSlotChange.class, 2, Side.CLIENT);
 		INSTANCE.registerMessage(MessageActiveSlotChange.class, MessageActiveSlotChange.class, 3, Side.SERVER);
+		INSTANCE.registerMessage(MessageAssignSpell.class, MessageAssignSpell.class, 4, Side.SERVER);
+		INSTANCE.registerMessage(MessageAssignSpell.class, MessageAssignSpell.class, 5, Side.CLIENT);
 	}
 
 	public static void sendToServer(IMessage message) {

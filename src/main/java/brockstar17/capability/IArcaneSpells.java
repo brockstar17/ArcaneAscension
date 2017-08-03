@@ -1,6 +1,6 @@
 package brockstar17.capability;
 
-public interface IArcaneSpellSlot
+public interface IArcaneSpells
 {
 	/**
 	 * Set the active spell slot.
@@ -16,4 +16,16 @@ public interface IArcaneSpellSlot
 	 * @return the active spell slot
 	 */
 	public int getActiveSpellSlot();
+
+	public int getIcon1();
+
+	public void setIcon1(int icon);
+
+	public int getIcon2();
+
+	public void setIcon2(int icon);
+
+	public int getIcon3();
+
+	public void setIcon3(int icon);
 }

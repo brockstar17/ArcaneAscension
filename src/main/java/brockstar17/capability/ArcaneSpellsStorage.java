@@ -6,16 +6,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class ArcaneSpellSlotStorage implements IStorage<IArcaneSpellSlot>
+public class ArcaneSpellsStorage implements IStorage<IArcaneSpells>
 {
 	@Override
-	public NBTBase writeNBT(Capability<IArcaneSpellSlot> capability, IArcaneSpellSlot instance, EnumFacing side) {
+	public NBTBase writeNBT(Capability<IArcaneSpells> capability, IArcaneSpells instance, EnumFacing side) {
 
 		return new NBTTagInt(instance.getActiveSpellSlot());
 	}
 
 	@Override
-	public void readNBT(Capability<IArcaneSpellSlot> capability, IArcaneSpellSlot instance, EnumFacing side, NBTBase nbt) {
+	public void readNBT(Capability<IArcaneSpells> capability, IArcaneSpells instance, EnumFacing side, NBTBase nbt) {
 
 		instance.setActiveSpellSlot(((NBTTagInt) nbt).getInt());
 	}

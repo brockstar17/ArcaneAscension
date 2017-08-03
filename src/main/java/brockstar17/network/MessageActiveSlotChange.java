@@ -1,7 +1,7 @@
 package brockstar17.network;
 
-import brockstar17.capability.ArcaneSpellSlotProvider;
-import brockstar17.capability.IArcaneSpellSlot;
+import brockstar17.capability.ArcaneSpellsProvider;
+import brockstar17.capability.IArcaneSpells;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +13,7 @@ public class MessageActiveSlotChange extends MessageBase<MessageActiveSlotChange
 
 	private int activeSlot;
 
-	private Capability<IArcaneSpellSlot> cslot = ArcaneSpellSlotProvider.ACTIVESPELL;
+	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
 
 	public MessageActiveSlotChange()
 	{
@@ -36,13 +36,13 @@ public class MessageActiveSlotChange extends MessageBase<MessageActiveSlotChange
 
 	@Override
 	public void handleClientSide(MessageActiveSlotChange message, EntityPlayer player) {
-		IArcaneSpellSlot slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
+		IArcaneSpells slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
 		slot.setActiveSpellSlot(message.activeSlot);
 	}
 
 	@Override
 	public void handleServerSide(MessageActiveSlotChange message, EntityPlayer player) {
-		IArcaneSpellSlot slot = player.getCapability(cslot, null);
+		IArcaneSpells slot = player.getCapability(cslot, null);
 		slot.setActiveSpellSlot(message.activeSlot);
 		NetworkHandler.sendTo(new MessageActiveSlotChange(slot.getActiveSpellSlot()), (EntityPlayerMP) player);
 	}

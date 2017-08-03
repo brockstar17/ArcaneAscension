@@ -18,6 +18,6 @@ public class CapabilityHandler
 			return;
 
 		e.addCapability(MANA, new ArcaneManaProvider());
-		e.addCapability(ACTIVESPELL, new ArcaneSpellSlotProvider());
+		e.addCapability(ACTIVESPELL, new ArcaneSpellsProvider());
 	}
 }

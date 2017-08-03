@@ -2,11 +2,12 @@ package brockstar17;
 
 import brockstar17.capability.ArcaneMana;
 import brockstar17.capability.ArcaneManaStorage;
-import brockstar17.capability.ArcaneSpellSlot;
-import brockstar17.capability.ArcaneSpellSlotStorage;
+import brockstar17.capability.ArcaneSpells;
+import brockstar17.capability.ArcaneSpellsStorage;
 import brockstar17.capability.CapabilityHandler;
 import brockstar17.capability.IArcaneMana;
-import brockstar17.capability.IArcaneSpellSlot;
+import brockstar17.capability.IArcaneSpells;
+import brockstar17.events.ArcaneGuiHandler;
 import brockstar17.events.ArcaneManaEventsHandler;
 import brockstar17.gui.RenderArcaneGui;
 import brockstar17.items.ArcaneItems;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
  * The main class of the mod. <br>
@@ -43,7 +45,7 @@ public class ArcaneAscension
 
 		// Put this first because many items and spells will use mana
 		CapabilityManager.INSTANCE.register(IArcaneMana.class, new ArcaneManaStorage(), ArcaneMana.class);
-		CapabilityManager.INSTANCE.register(IArcaneSpellSlot.class, new ArcaneSpellSlotStorage(), ArcaneSpellSlot.class);
+		CapabilityManager.INSTANCE.register(IArcaneSpells.class, new ArcaneSpellsStorage(), ArcaneSpells.class);
 
 		ArcaneItems.preInit();
 		proxy.preInit();
@@ -62,6 +64,7 @@ public class ArcaneAscension
 		proxy.init();
 
 		MinecraftForge.EVENT_BUS.register(new ArcaneManaEventsHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(ArcaneAscension.instance, new ArcaneGuiHandler());
 
 		Log.info("Initialization of Arcane Ascension is complete");
 	}
