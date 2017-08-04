@@ -1,4 +1,4 @@
-package brockstar17.gui;
+package brockstar17.client.gui;
 
 import java.awt.Point;
 import java.io.IOException;

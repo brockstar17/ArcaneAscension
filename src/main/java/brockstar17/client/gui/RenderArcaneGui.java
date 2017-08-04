@@ -1,4 +1,4 @@
-package brockstar17.gui;
+package brockstar17.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

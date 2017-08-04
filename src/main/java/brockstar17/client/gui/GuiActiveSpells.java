@@ -1,4 +1,4 @@
-package brockstar17.gui;
+package brockstar17.client.gui;
 
 import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;

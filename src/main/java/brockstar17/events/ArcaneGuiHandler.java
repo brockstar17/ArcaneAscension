@@ -1,6 +1,6 @@
 package brockstar17.events;
 
-import brockstar17.gui.SpellSelectGui;
+import brockstar17.client.gui.SpellSelectGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
