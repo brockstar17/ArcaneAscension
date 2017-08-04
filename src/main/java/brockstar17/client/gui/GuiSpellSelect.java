@@ -13,14 +13,16 @@ import brockstar17.network.MessageAssignSpell;
 import brockstar17.network.NetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 
 public class GuiSpellSelect extends GuiScreen
 {
 	private Minecraft mc;
-	private boolean isGuiOpen;
 	private String[] elements = { "Air", "Earth", "Fire", "Spirit", "Water" };
 	private int[] colors = { 4387918, 7159569, 15870985, 5178163, 4524018 };
 
@@ -41,10 +43,22 @@ public class GuiSpellSelect extends GuiScreen
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		// Draw the default background
 		this.drawDefaultBackground();
-		// Draw highlight
+
+		mc.getTextureManager().bindTexture(texture);
+
+		// Add this block of code before you draw the section of your texture containing
+		// transparency
+		GlStateManager.pushAttrib();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.disableLighting();
+		// alpha test and blend needed due to vanilla or Forge rendering bug
+		GlStateManager.enableAlpha();
+		GlStateManager.enableBlend();
 
 		// Draw the actual gui
 		drawSpellSelect(mouseX, mouseY);
+
+		GlStateManager.popAttrib();
 
 		// Call to super
 		super.drawScreen(mouseX, mouseY, partialTicks);
@@ -67,13 +81,28 @@ public class GuiSpellSelect extends GuiScreen
 		IArcaneSpells spell = player.getCapability(cslot, null);
 		switch (key) {
 		case Keyboard.KEY_T:
-			NetworkHandler.sendToServer(new MessageAssignSpell(getSpellIcon(slotToHighlight), spell.getIcon2(), spell.getIcon3()));
+			if (!spellAlreadyActive(slotToHighlight, spell)) {
+				NetworkHandler.sendToServer(new MessageAssignSpell(getSpellIcon(slotToHighlight), spell.getIcon2(), spell.getIcon3()));
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+			}
 			break;
 		case Keyboard.KEY_G:
-			NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), getSpellIcon(slotToHighlight), spell.getIcon3()));
+			if (!spellAlreadyActive(slotToHighlight, spell)) {
+				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), getSpellIcon(slotToHighlight), spell.getIcon3()));
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+			}
 			break;
 		case Keyboard.KEY_V:
-			NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), spell.getIcon2(), getSpellIcon(slotToHighlight)));
+			if (!spellAlreadyActive(slotToHighlight, spell)) {
+				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), spell.getIcon2(), getSpellIcon(slotToHighlight)));
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+			}
 			break;
 		case Keyboard.KEY_Y:
 			this.mc.displayGuiScreen(null);
@@ -190,11 +219,11 @@ public class GuiSpellSelect extends GuiScreen
 		return -1;
 	}
 
-	public boolean isGuiOpen() {
-		return this.isGuiOpen;
+	private boolean spellAlreadyActive(int spell, IArcaneSpells spells) {
+		if (getSpellIcon(spell) != -1 && (spells.getIcon1() == getSpellIcon(spell) || spells.getIcon2() == getSpellIcon(spell) || spells.getIcon3() == getSpellIcon(spell))) {
+			return true;
+		}
+		return false;
 	}
 
-	public void setGuiOpen(boolean value) {
-		this.isGuiOpen = value;
-	}
 }
