@@ -1,4 +1,4 @@
-package brockstar17.capability;
+package brockstar17.capability.spells;
 
 public interface IArcaneSpells
 {

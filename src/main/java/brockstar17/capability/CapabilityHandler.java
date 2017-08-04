@@ -1,6 +1,8 @@
 package brockstar17.capability;
 
 import brockstar17.Reference;
+import brockstar17.capability.mana.ArcaneManaProvider;
+import brockstar17.capability.spells.ArcaneSpellsProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 import brockstar17.Reference;
-import brockstar17.capability.ArcaneSpellsProvider;
-import brockstar17.capability.IArcaneSpells;
+import brockstar17.capability.spells.ArcaneSpellsProvider;
+import brockstar17.capability.spells.IArcaneSpells;
 import brockstar17.network.MessageAssignSpell;
 import brockstar17.network.NetworkHandler;
 import net.minecraft.client.Minecraft;

@@ -1,12 +1,12 @@
 package brockstar17;
 
-import brockstar17.capability.ArcaneMana;
-import brockstar17.capability.ArcaneManaStorage;
-import brockstar17.capability.ArcaneSpells;
-import brockstar17.capability.ArcaneSpellsStorage;
 import brockstar17.capability.CapabilityHandler;
-import brockstar17.capability.IArcaneMana;
-import brockstar17.capability.IArcaneSpells;
+import brockstar17.capability.mana.ArcaneMana;
+import brockstar17.capability.mana.ArcaneManaStorage;
+import brockstar17.capability.mana.IArcaneMana;
+import brockstar17.capability.spells.ArcaneSpells;
+import brockstar17.capability.spells.ArcaneSpellsStorage;
+import brockstar17.capability.spells.IArcaneSpells;
 import brockstar17.events.ArcaneGuiHandler;
 import brockstar17.events.ArcaneManaEventsHandler;
 import brockstar17.gui.RenderArcaneGui;

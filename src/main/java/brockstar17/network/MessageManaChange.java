@@ -1,7 +1,7 @@
 package brockstar17.network;
 
-import brockstar17.capability.ArcaneManaProvider;
-import brockstar17.capability.IArcaneMana;
+import brockstar17.capability.mana.ArcaneManaProvider;
+import brockstar17.capability.mana.IArcaneMana;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
