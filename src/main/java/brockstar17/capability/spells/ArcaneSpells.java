@@ -1,53 +1,53 @@
 package brockstar17.capability.spells;
 
+import brockstar17.utility.Log;
+
 public class ArcaneSpells implements IArcaneSpells
 {
+	private int[] initSpellArray = { 0, -1, -1, -1 };
 
-	private int activeSpellSlot = 0;
-	private int icon1 = -1, icon2 = -1, icon3 = -1;
+	// Active spell slot = initSpellArray[0];
+	// Icon 1 = initSpellArray[1];
+	// Icon 2 = initSpellArray[2];
+	// Icon 3 = initSpellArray[3];
 
 	@Override
-	public void setActiveSpellSlot(int slot) {
-		this.activeSpellSlot = slot;
+	public void initSpells(int[] arr) {
+		this.initSpellArray = arr;
+		if (arr.length != 4) {
+			Log.error("Spell initialization array is i.nvalid, this is a bug");
+		}
+
 	}
 
 	@Override
-	public int getActiveSpellSlot() {
+	public int[] getInitSpellsArray() {
 
-		return this.activeSpellSlot;
+		return this.initSpellArray;
+	}
+
+	@Override
+	public int getActiveSlot() {
+
+		return this.initSpellArray[0];
 	}
 
 	@Override
 	public int getIcon1() {
 
-		return this.icon1;
-	}
-
-	@Override
-	public void setIcon1(int icon) {
-		this.icon1 = icon;
+		return this.initSpellArray[1];
 	}
 
 	@Override
 	public int getIcon2() {
 
-		return this.icon2;
-	}
-
-	@Override
-	public void setIcon2(int icon) {
-		this.icon2 = icon;
+		return this.initSpellArray[2];
 	}
 
 	@Override
 	public int getIcon3() {
 
-		return this.icon3;
-	}
-
-	@Override
-	public void setIcon3(int icon) {
-		this.icon3 = icon;
+		return this.initSpellArray[3];
 	}
 
 }

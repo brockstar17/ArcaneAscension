@@ -27,7 +27,7 @@ public class GuiSpellSelect extends GuiScreen
 	private ArrayList<Point> slotCorners;
 	private int slotToHighlight = -1;
 
-	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
+	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/arcane_gui.png");
 

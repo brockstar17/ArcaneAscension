@@ -32,7 +32,7 @@ public class KeyInputHandler
 	public void handleKeyInputEvent(InputEvent.KeyInputEvent event) {
 		Keybindings key = getPressedKey();
 
-		Capability<IArcaneSpells> cspells = ArcaneSpellsProvider.ACTIVESPELL;
+		Capability<IArcaneSpells> cspells = ArcaneSpellsProvider.SPELLS;
 		EntityPlayer player = Minecraft.getMinecraft().player;
 
 		if (key != null) {
@@ -53,7 +53,8 @@ public class KeyInputHandler
 				break;
 			case USESPELL:
 				IArcaneSpells spells = player.getCapability(cspells, null);
-				Log.info("Spell " + getCurrentSpell(spells.getActiveSpellSlot(), spells));
+				Log.info("Spell " + getCurrentSpell(spells.getActiveSlot(), spells));
+				Log.info("Slot 1: " + spells.getIcon1() + '\n' + "Slot 2: " + spells.getIcon2() + '\n' + "Slot 3: " + spells.getIcon3());
 				break;
 			default:
 				break;

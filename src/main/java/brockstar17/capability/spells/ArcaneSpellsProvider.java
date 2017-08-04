@@ -10,31 +10,31 @@ public class ArcaneSpellsProvider implements ICapabilitySerializable<NBTBase>
 {
 
 	@CapabilityInject(IArcaneSpells.class)
-	public static final Capability<IArcaneSpells> ACTIVESPELL = null;
+	public static final Capability<IArcaneSpells> SPELLS = null;
 
-	private IArcaneSpells instance = ACTIVESPELL.getDefaultInstance();
+	private IArcaneSpells instance = SPELLS.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-		return capability == ACTIVESPELL;
+		return capability == SPELLS;
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
-		return capability == ACTIVESPELL ? ACTIVESPELL.<T>cast(this.instance) : null;
+		return capability == SPELLS ? SPELLS.<T>cast(this.instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
 
-		return ACTIVESPELL.getStorage().writeNBT(ACTIVESPELL, this.instance, null);
+		return SPELLS.getStorage().writeNBT(SPELLS, this.instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		ACTIVESPELL.getStorage().readNBT(ACTIVESPELL, this.instance, null, nbt);
+		SPELLS.getStorage().readNBT(SPELLS, this.instance, null, nbt);
 	}
 
 }

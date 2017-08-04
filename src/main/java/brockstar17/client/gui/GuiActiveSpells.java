@@ -62,7 +62,7 @@ public class GuiActiveSpells extends Gui
 
 		drawTexturedModalRect(xPos, yPos, tx, ty, w, h);
 		// Draw spell icons
-		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
+		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 		IArcaneSpells slot = player.getCapability(cslot, null);
 		xPos += 2;
 		drawTexturedModalRect(xPos, 18, SpellIcons.getTextX(slot.getIcon1()), SpellIcons.getTextY(slot.getIcon1()), 16, 16);
@@ -71,11 +71,11 @@ public class GuiActiveSpells extends Gui
 	}
 
 	private int getActiveSlot(EntityPlayer player) {
-		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
+		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 
 		IArcaneSpells slot = player.getCapability(cslot, null);
 
-		return slot.getActiveSpellSlot();
+		return slot.getActiveSlot();
 	}
 
 	private void drawActiveSpells() {

@@ -11,7 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 public class MessageAssignSpell extends MessageBase<MessageAssignSpell>
 {
 	private int icon1, icon2, icon3;
-	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
+	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 
 	public MessageAssignSpell()
 	{
@@ -42,18 +42,17 @@ public class MessageAssignSpell extends MessageBase<MessageAssignSpell>
 	public void handleClientSide(MessageAssignSpell message, EntityPlayer player) {
 		// Log.info("Assign Packet has been sent to client");
 		IArcaneSpells slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
-		slot.setIcon1(message.icon1);
-		slot.setIcon2(message.icon2);
-		slot.setIcon3(message.icon3);
+		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3 };
+		slot.initSpells(arr);
+
 	}
 
 	@Override
 	public void handleServerSide(MessageAssignSpell message, EntityPlayer player) {
 		// Log.info("Assign Packet has been sent to server");
 		IArcaneSpells slot = player.getCapability(cslot, null);
-		slot.setIcon1(message.icon1);
-		slot.setIcon2(message.icon2);
-		slot.setIcon3(message.icon3);
+		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3 };
+		slot.initSpells(arr);
 		NetworkHandler.sendTo(new MessageAssignSpell(message.icon1, message.icon2, message.icon3), (EntityPlayerMP) player);
 	}
 

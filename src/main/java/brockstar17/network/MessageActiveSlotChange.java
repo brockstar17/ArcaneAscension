@@ -13,7 +13,7 @@ public class MessageActiveSlotChange extends MessageBase<MessageActiveSlotChange
 
 	private int activeSlot;
 
-	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.ACTIVESPELL;
+	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 
 	public MessageActiveSlotChange()
 	{
@@ -37,14 +37,16 @@ public class MessageActiveSlotChange extends MessageBase<MessageActiveSlotChange
 	@Override
 	public void handleClientSide(MessageActiveSlotChange message, EntityPlayer player) {
 		IArcaneSpells slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
-		slot.setActiveSpellSlot(message.activeSlot);
+		int[] arr = new int[] { message.activeSlot, slot.getIcon1(), slot.getIcon2(), slot.getIcon3() };
+		slot.initSpells(arr);
 	}
 
 	@Override
 	public void handleServerSide(MessageActiveSlotChange message, EntityPlayer player) {
 		IArcaneSpells slot = player.getCapability(cslot, null);
-		slot.setActiveSpellSlot(message.activeSlot);
-		NetworkHandler.sendTo(new MessageActiveSlotChange(slot.getActiveSpellSlot()), (EntityPlayerMP) player);
+		int[] arr = new int[] { message.activeSlot, slot.getIcon1(), slot.getIcon2(), slot.getIcon3() };
+		slot.initSpells(arr);
+		NetworkHandler.sendTo(new MessageActiveSlotChange(message.activeSlot), (EntityPlayerMP) player);
 	}
 
 }
