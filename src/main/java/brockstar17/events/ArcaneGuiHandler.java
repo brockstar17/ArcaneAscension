@@ -1,6 +1,6 @@
 package brockstar17.events;
 
-import brockstar17.client.gui.SpellSelectGui;
+import brockstar17.client.gui.GuiSpellSelect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -24,7 +24,7 @@ public class ArcaneGuiHandler implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if (ID == SPELL_GUI) {
-			return new SpellSelectGui(Minecraft.getMinecraft());
+			return new GuiSpellSelect(Minecraft.getMinecraft());
 		}
 		return null;
 	}

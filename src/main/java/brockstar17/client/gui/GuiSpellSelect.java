@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 
-public class SpellSelectGui extends GuiScreen
+public class GuiSpellSelect extends GuiScreen
 {
 	private Minecraft mc;
 	private boolean isGuiOpen;
@@ -31,7 +31,7 @@ public class SpellSelectGui extends GuiScreen
 
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/arcane_gui.png");
 
-	public SpellSelectGui(Minecraft mc)
+	public GuiSpellSelect(Minecraft mc)
 	{
 		this.mc = mc;
 		this.slotCorners = new ArrayList<Point>();
@@ -44,7 +44,7 @@ public class SpellSelectGui extends GuiScreen
 		// Draw highlight
 
 		// Draw the actual gui
-		drawSpellSelect();
+		drawSpellSelect(mouseX, mouseY);
 
 		// Call to super
 		super.drawScreen(mouseX, mouseY, partialTicks);
@@ -54,14 +54,6 @@ public class SpellSelectGui extends GuiScreen
 	public boolean doesGuiPauseGame() {
 
 		return false;
-	}
-
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		// Log.info(getSlotClicked(mouseX, mouseY));
-		slotToHighlight = getSlotClicked(mouseX, mouseY);
-		updateScreen();
-		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	private void drawHighlight(int x, int y) {
@@ -84,7 +76,10 @@ public class SpellSelectGui extends GuiScreen
 			NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), spell.getIcon2(), getSpellIcon(slotToHighlight)));
 			break;
 		case Keyboard.KEY_Y:
-
+			this.mc.displayGuiScreen(null);
+			break;
+		case Keyboard.KEY_E:
+			this.mc.displayGuiScreen(null);
 			break;
 		default:
 
@@ -117,7 +112,7 @@ public class SpellSelectGui extends GuiScreen
 
 	}
 
-	private void drawSpellSelect() {
+	private void drawSpellSelect(int mouseX, int mouseY) {
 
 		int sx = 44, rx = sx;
 		int sy = 15;
@@ -135,9 +130,12 @@ public class SpellSelectGui extends GuiScreen
 
 		}
 
+		slotToHighlight = getSlotClicked(mouseX, mouseY);
+
 		if (slotToHighlight != -1) {
 			Point p = slotCorners.get(slotToHighlight);
 			drawHighlight(p.x + 1, p.y + 1);
+			updateScreen();
 		}
 
 		sy = 15;
