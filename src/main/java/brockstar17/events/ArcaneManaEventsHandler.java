@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
@@ -30,7 +31,7 @@ public class ArcaneManaEventsHandler
 			EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
 			EntityLiving target = (EntityLiving) e.getEntity();
 			IArcaneMana mana = getInstance(player);
-			mana.gainMana(r.nextInt((int) target.getMaxHealth()/2) + 1);
+			mana.gainMana(r.nextInt((int) target.getMaxHealth() / 2) + 1);
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 		}
 	}
@@ -45,11 +46,14 @@ public class ArcaneManaEventsHandler
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerLogin(PlayerLoggedInEvent e) {
+
 		EntityPlayer player = e.player;
 		IArcaneMana mana = getInstance(player);
-		NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
+		if (mana.getMana() != 0)
+			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
+
 	}
 
 	/**

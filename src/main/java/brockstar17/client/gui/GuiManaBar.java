@@ -37,7 +37,7 @@ public class GuiManaBar extends Gui
 		// Here we draw the background bar which contains a transparent section; note the new size
 		drawTexturedModalRect(xPos, yPos, 0, 0, 56, 9);
 		// You can keep drawing without changing anything
-		int manabarwidth = (int) (((float) mana.getMana() / mana.getMaxMana()) * 49);
+		int manabarwidth = (int) (((float) mana.getMana() / mana.getMaxMana()) * 53);
 		drawTexturedModalRect(xPos + 1, yPos + 1, 0, 9, manabarwidth, 9);
 		String s = "Mana " + mana.getMana() + "/" + mana.getMaxMana();
 		xPos += 60;

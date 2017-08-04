@@ -33,6 +33,8 @@ public class ArcaneMana implements IArcaneMana
 	public void gainMana(int amount) {
 		if (this.mana + amount <= this.maxMana)
 			this.mana += amount;
+		else
+			this.mana = getMaxMana();
 	}
 
 	@Override

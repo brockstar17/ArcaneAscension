@@ -3,7 +3,6 @@ package brockstar17.network;
 import brockstar17.capability.mana.ArcaneManaProvider;
 import brockstar17.capability.mana.IArcaneMana;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
 
@@ -35,7 +34,8 @@ public class MessageManaChange extends MessageBase<MessageManaChange>
 
 	@Override
 	public void handleClientSide(MessageManaChange message, EntityPlayer player) {
-		IArcaneMana mana = Minecraft.getMinecraft().player.getCapability(cmana, null);
+
+		IArcaneMana mana = player.getCapability(cmana, null);
 		mana.setMana(message.mana);
 	}
 

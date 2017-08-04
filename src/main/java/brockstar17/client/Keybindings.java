@@ -6,7 +6,11 @@ import net.minecraft.client.settings.KeyBinding;
 
 public enum Keybindings {
 
-	SAS1("key.arcaneascension.activeslot1", Keyboard.KEY_T), SAS2("key.arcaneascension.activeslot2", Keyboard.KEY_G), SAS3("key.arcaneascension.activeslot3", Keyboard.KEY_V), SPELLGUI("key.arcaneascension.spellgui", Keyboard.KEY_Y);
+	SAS1("key.arcaneascension.activeslot1", Keyboard.KEY_T),
+	SAS2("key.arcaneascension.activeslot2", Keyboard.KEY_G),
+	SAS3("key.arcaneascension.activeslot3", Keyboard.KEY_V),
+	USESPELL("key.arcaneascension.usespell", Keyboard.KEY_F),
+	SPELLGUI("key.arcaneascension.spellgui", Keyboard.KEY_Y);
 
 	private final KeyBinding keybinding;
 
