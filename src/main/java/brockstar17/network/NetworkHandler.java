@@ -21,7 +21,8 @@ public class NetworkHandler
 		INSTANCE.registerMessage(MessageAssignSpell.class, MessageAssignSpell.class, 4, Side.SERVER);
 		INSTANCE.registerMessage(MessageAssignSpell.class, MessageAssignSpell.class, 5, Side.CLIENT);
 		INSTANCE.registerMessage(MessageUseSpell.class, MessageUseSpell.class, 6, Side.SERVER);
-		INSTANCE.registerMessage(MessageEntityLookingAt.class, MessageEntityLookingAt.class, 7, Side.SERVER);
+		INSTANCE.registerMessage(MessageUseSpell.class, MessageUseSpell.class, 7, Side.CLIENT);
+		INSTANCE.registerMessage(MessageEntityLookingAt.class, MessageEntityLookingAt.class, 8, Side.SERVER);
 	}
 
 	public static void sendToServer(IMessage message) {

@@ -34,13 +34,20 @@ public class ArcaneManaEventsHandler
 			EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
 			EntityLiving target = (EntityLiving) e.getEntity();
 			IArcaneMana mana = getInstance(player);
-			mana.gainMana(r.nextInt((int) target.getMaxHealth() / 2) + 1);
+			int gm = (int) (target.getMaxHealth() / 2 + 1);
+			if (gm > 0) {
+				mana.gainMana(r.nextInt(gm));
+			}
+			else {
+				mana.gainMana(1);
+			}
+			mana.gainMana(gm);
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 		}
 	}
 
 	@SubscribeEvent
-	public void removeManaOnPlayerDeath(LivingDeathEvent e) {
+	public void handlePlayerDeath(LivingDeathEvent e) {
 		if (e.getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) e.getEntity();
 			IArcaneMana mana = getInstance(player);
