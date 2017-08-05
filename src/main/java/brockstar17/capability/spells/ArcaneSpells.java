@@ -4,7 +4,7 @@ import brockstar17.utility.Log;
 
 public class ArcaneSpells implements IArcaneSpells
 {
-	private int[] initSpellArray = { 0, -1, -1, -1, -1 };
+	private int[] initSpellArray = { 0, -1, -1, -1 };
 
 	// Active spell slot = initSpellArray[0];
 	// Icon 1 = initSpellArray[1];
@@ -15,7 +15,7 @@ public class ArcaneSpells implements IArcaneSpells
 	@Override
 	public void initSpells(int[] arr) {
 		this.initSpellArray = arr;
-		if (arr.length != 5) {
+		if (arr.length != 4) {
 			Log.error("Spell initialization array is i.nvalid, this is a bug");
 		}
 
@@ -46,12 +46,6 @@ public class ArcaneSpells implements IArcaneSpells
 			return -1;
 		}
 
-	}
-
-	@Override
-	public int getSpellTargetId() {
-
-		return this.initSpellArray[4];
 	}
 
 }

@@ -41,9 +41,7 @@ public class MessageEntityLookingAt extends MessageBase<MessageEntityLookingAt>
 	public void handleServerSide(MessageEntityLookingAt message, EntityPlayer player) {
 		// Log.info("MELA packet has been recieved on server");
 		IArcaneSpells spells = player.getCapability(cspells, null);
-		int[] arr = new int[] { spells.getActiveSlot(), spells.getIcon(0), spells.getIcon(1), spells.getIcon(2), message.entityId };
-		spells.initSpells(arr);
-		NetworkHandler.sendToServer(new MessageUseSpell(spells.getIcon(spells.getActiveSlot())));
+		NetworkHandler.sendToServer(new MessageUseSpell(spells.getIcon(spells.getActiveSlot()), message.entityId));
 	}
 
 }

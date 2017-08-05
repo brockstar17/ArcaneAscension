@@ -18,6 +18,4 @@ public interface IArcaneSpells
 
 	public int getIcon(int icon);
 
-	public int getSpellTargetId();
-
 }

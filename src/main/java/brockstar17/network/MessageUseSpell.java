@@ -9,10 +9,15 @@ import brockstar17.utility.Log;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntitySmallFireball;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -23,6 +28,7 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 {
 
 	private int spellId;
+	private int entId = -1;
 
 	private Capability<IArcaneSpells> cspells = ArcaneSpellsProvider.SPELLS;
 
@@ -30,26 +36,33 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 	{
 	}
 
-	public MessageUseSpell(int spellId)
+	public MessageUseSpell(int spellId, int entId)
 	{
 		this.spellId = spellId;
+		this.entId = entId;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.spellId = buf.readInt();
+		this.entId = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(this.spellId);
+		buf.writeInt(this.entId);
 	}
 
 	@Override
 	public void handleClientSide(MessageUseSpell message, EntityPlayer player) {
 		int id = message.spellId;
 		World world = player.world;
-		spellParticles(id, world, player, (EntityLivingBase) world.getEntityByID(player.getCapability(cspells, null).getSpellTargetId()));
+		EntityLiving target = null;
+		if (message.entId != -1) {
+			target = (EntityLiving) world.getEntityByID(message.entId);
+		}
+		spellParticles(id, world, player, target);
 	}
 
 	@Override
@@ -60,17 +73,12 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 		int spellId = message.spellId;
 
 		EntityLiving target = null;
-		if (spells.getSpellTargetId() != -1) {
-			target = (EntityLiving) world.getEntityByID(spells.getSpellTargetId());
-			spells.initSpells(new int[] { spells.getActiveSlot(), spells.getIcon(0), spells.getIcon(1), spells.getIcon(2), target.getEntityId() });
-
-		}
-		else {
-			target = null;
+		if (message.entId != -1) {
+			target = (EntityLiving) world.getEntityByID(message.entId);
 		}
 
 		useSpell(spellId, world, pos, player, target);
-		NetworkHandler.sendTo(new MessageUseSpell(spellId), (EntityPlayerMP) player);
+		NetworkHandler.sendTo(new MessageUseSpell(spellId, message.entId), (EntityPlayerMP) player);
 
 	}
 
@@ -89,9 +97,27 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 			}
 			break;
 		case 1: // Lightning
-
+			if (target != null) {
+				target.setHealth(target.getHealth() - (r.nextFloat() * 4));
+				if (target.getHealth() <= 0 && !target.isDead) {
+					target.onDeath(DamageSource.causePlayerDamage(player));
+				}
+				int chance = r.nextInt(20);
+				if (chance == 1) {
+					target.setFire(20);
+				}
+			}
 			break;
 		case 2: // Entomb
+			if (target != null) {
+
+				world.setBlockState(target.getPosition(), Blocks.DIRT.getDefaultState(), 2);
+				target.setHealth(target.getHealth() - 0.5F);
+				world.destroyBlock(target.getPosition(), false);
+				if (target.getHealth() <= 0 && !target.isDead) {
+					target.onDeath(DamageSource.causePlayerDamage(player));
+				}
+			}
 
 			break;
 		case 3: // Fireball
@@ -147,11 +173,18 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 			}
 			break;
 		case 1: // Lightning
-
+			if (target != null) {
+				world.playSound(player, player.getPosition(), SoundEvents.ENTITY_LIGHTNING_IMPACT, SoundCategory.WEATHER, 2.0F, 1.0F);
+				world.spawnEntity(new EntityLightningBolt(world, target.posX, target.posY, target.posZ, true));
+				target.performHurtAnimation();
+			}
 			break;
 		case 2: // Entomb
-
+			if (target != null) {
+				target.performHurtAnimation();
+			}
 			break;
+
 		case 3: // Fireball
 
 			break;
@@ -178,6 +211,11 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 	}
 
 	private void particleBeam(World world, EntityPlayer player, EntityLivingBase target, EnumParticleTypes particle, Random rand) {
+
+		Vec3d vp = player.getPositionVector();
+		Vec3d vi = target.getPositionVector();
+		int sx = (int) (vp.xCoord - vi.xCoord);
+		int sz = (int) (vp.zCoord - vi.zCoord);
 
 	}
 

@@ -16,6 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 /**
  * This class handles vanilla events involving Arcane Mana
@@ -51,12 +52,20 @@ public class ArcaneManaEventsHandler
 		if (e.getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) e.getEntity();
 			IArcaneMana mana = getInstance(player);
-			IArcaneSpells spells = player.getCapability(cspells, null);
+
 			mana.setMana(0);
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 
-			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
 		}
+	}
+
+	@SubscribeEvent
+	public void handlePlayerRespawn(PlayerRespawnEvent e) {
+
+		EntityPlayer player = e.player;
+		IArcaneSpells spells = player.getCapability(cspells, null);
+		NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
+
 	}
 
 	@SubscribeEvent()

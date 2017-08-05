@@ -37,14 +37,14 @@ public class MessageActiveSlotChange extends MessageBase<MessageActiveSlotChange
 	@Override
 	public void handleClientSide(MessageActiveSlotChange message, EntityPlayer player) {
 		IArcaneSpells slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
-		int[] arr = new int[] { message.activeSlot, slot.getIcon(0), slot.getIcon(1), slot.getIcon(2), slot.getSpellTargetId() };
+		int[] arr = new int[] { message.activeSlot, slot.getIcon(0), slot.getIcon(1), slot.getIcon(2) };
 		slot.initSpells(arr);
 	}
 
 	@Override
 	public void handleServerSide(MessageActiveSlotChange message, EntityPlayer player) {
 		IArcaneSpells slot = player.getCapability(cslot, null);
-		int[] arr = new int[] { message.activeSlot, slot.getIcon(0), slot.getIcon(1), slot.getIcon(2), slot.getSpellTargetId() };
+		int[] arr = new int[] { message.activeSlot, slot.getIcon(0), slot.getIcon(1), slot.getIcon(2) };
 		slot.initSpells(arr);
 		NetworkHandler.sendTo(new MessageActiveSlotChange(message.activeSlot), (EntityPlayerMP) player);
 	}
