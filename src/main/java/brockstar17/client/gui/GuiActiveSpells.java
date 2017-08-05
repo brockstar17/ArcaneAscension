@@ -65,9 +65,9 @@ public class GuiActiveSpells extends Gui
 		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 		IArcaneSpells slot = player.getCapability(cslot, null);
 		xPos += 2;
-		drawTexturedModalRect(xPos, 18, SpellIcons.getTextX(slot.getIcon1()), SpellIcons.getTextY(slot.getIcon1()), 16, 16);
-		drawTexturedModalRect(xPos, 39, SpellIcons.getTextX(slot.getIcon2()), SpellIcons.getTextY(slot.getIcon2()), 16, 16);
-		drawTexturedModalRect(xPos, 60, SpellIcons.getTextX(slot.getIcon3()), SpellIcons.getTextY(slot.getIcon3()), 16, 16);
+		drawTexturedModalRect(xPos, 18, SpellIcons.getTextX(slot.getIcon(0)), SpellIcons.getTextY(slot.getIcon(0)), 16, 16);
+		drawTexturedModalRect(xPos, 39, SpellIcons.getTextX(slot.getIcon(1)), SpellIcons.getTextY(slot.getIcon(1)), 16, 16);
+		drawTexturedModalRect(xPos, 60, SpellIcons.getTextX(slot.getIcon(2)), SpellIcons.getTextY(slot.getIcon(2)), 16, 16);
 	}
 
 	private int getActiveSlot(EntityPlayer player) {

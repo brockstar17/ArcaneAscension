@@ -11,6 +11,7 @@ import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;
 import brockstar17.network.MessageAssignSpell;
 import brockstar17.network.NetworkHandler;
+import brockstar17.utility.SpellIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -82,7 +83,7 @@ public class GuiSpellSelect extends GuiScreen
 		switch (key) {
 		case Keyboard.KEY_T:
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
-				NetworkHandler.sendToServer(new MessageAssignSpell(getSpellIcon(slotToHighlight), spell.getIcon2(), spell.getIcon3()));
+				NetworkHandler.sendToServer(new MessageAssignSpell(SpellIcons.getSpellId(slotToHighlight), spell.getIcon(1), spell.getIcon(2)));
 			}
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
@@ -90,7 +91,7 @@ public class GuiSpellSelect extends GuiScreen
 			break;
 		case Keyboard.KEY_G:
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
-				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), getSpellIcon(slotToHighlight), spell.getIcon3()));
+				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), SpellIcons.getSpellId(slotToHighlight), spell.getIcon(2)));
 			}
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
@@ -98,7 +99,7 @@ public class GuiSpellSelect extends GuiScreen
 			break;
 		case Keyboard.KEY_V:
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
-				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon1(), spell.getIcon2(), getSpellIcon(slotToHighlight)));
+				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), spell.getIcon(1), SpellIcons.getSpellId(slotToHighlight)));
 			}
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
@@ -115,30 +116,6 @@ public class GuiSpellSelect extends GuiScreen
 			break;
 		}
 		super.keyTyped(typedChar, key);
-	}
-
-	private int getSpellIcon(int slot) {
-		switch (slot) {
-		case 0:
-			return 0;
-		case 1:
-			return 1;
-		case 5:
-			return 2;
-		case 10:
-			return 3;
-		case 15:
-			return 4;
-		case 16:
-			return 5;
-		case 17:
-			return 6;
-		case 20:
-			return 7;
-		default:
-			return -1;
-		}
-
 	}
 
 	private void drawSpellSelect(int mouseX, int mouseY) {
@@ -220,7 +197,7 @@ public class GuiSpellSelect extends GuiScreen
 	}
 
 	private boolean spellAlreadyActive(int spell, IArcaneSpells spells) {
-		if (getSpellIcon(spell) != -1 && (spells.getIcon1() == getSpellIcon(spell) || spells.getIcon2() == getSpellIcon(spell) || spells.getIcon3() == getSpellIcon(spell))) {
+		if (SpellIcons.getSpellId(spell) != -1 && (spells.getIcon(0) == SpellIcons.getSpellId(spell) || spells.getIcon(1) == SpellIcons.getSpellId(spell) || spells.getIcon(2) == SpellIcons.getSpellId(spell))) {
 			return true;
 		}
 		return false;

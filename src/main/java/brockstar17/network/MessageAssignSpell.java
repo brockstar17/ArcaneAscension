@@ -42,7 +42,7 @@ public class MessageAssignSpell extends MessageBase<MessageAssignSpell>
 	public void handleClientSide(MessageAssignSpell message, EntityPlayer player) {
 		// Log.info("Assign Packet has been sent to client");
 		IArcaneSpells slot = Minecraft.getMinecraft().player.getCapability(cslot, null);
-		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3 };
+		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3, slot.getSpellTargetId() };
 		slot.initSpells(arr);
 
 	}
@@ -51,7 +51,7 @@ public class MessageAssignSpell extends MessageBase<MessageAssignSpell>
 	public void handleServerSide(MessageAssignSpell message, EntityPlayer player) {
 		// Log.info("Assign Packet has been sent to server");
 		IArcaneSpells slot = player.getCapability(cslot, null);
-		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3 };
+		int[] arr = new int[] { slot.getActiveSlot(), message.icon1, message.icon2, message.icon3, slot.getSpellTargetId() };
 		slot.initSpells(arr);
 		NetworkHandler.sendTo(new MessageAssignSpell(message.icon1, message.icon2, message.icon3), (EntityPlayerMP) player);
 	}

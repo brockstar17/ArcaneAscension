@@ -16,10 +16,8 @@ public interface IArcaneSpells
 
 	public int getActiveSlot();
 
-	public int getIcon1();
+	public int getIcon(int icon);
 
-	public int getIcon2();
-
-	public int getIcon3();
+	public int getSpellTargetId();
 
 }

@@ -48,7 +48,7 @@ public class ArcaneManaEventsHandler
 			mana.setMana(0);
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 
-			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon1(), spells.getIcon2(), spells.getIcon3()), (EntityPlayerMP) player);
+			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class ArcaneManaEventsHandler
 			if (mana.getMana() != 0)
 				NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 
-			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon1(), spells.getIcon2(), spells.getIcon3()), (EntityPlayerMP) player);
+			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
 
 		}
 
