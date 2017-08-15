@@ -1,6 +1,7 @@
 package brockstar17.proxy;
 
 import brockstar17.Reference;
+import brockstar17.blocks.ArcaneBlocks;
 import brockstar17.client.KeyInputHandler;
 import brockstar17.client.Keybindings;
 import brockstar17.items.ArcaneItems;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ClientProxy extends CommonProxy
 {
 
+	// Register keybinds and setup the 3D model loader
 	@Override
 	public void preInit() {
 		OBJLoader.INSTANCE.addDomain(Reference.MODID);
@@ -26,22 +28,27 @@ public class ClientProxy extends CommonProxy
 		registerKeybinds();
 	}
 
+	// Register keybindings, I mentioned that they were client side only, so do that in this proxy
 	private void registerKeybinds() {
 		FMLCommonHandler.instance().bus().register(new KeyInputHandler());
-		for (Keybindings key : Keybindings.values()) {
+		for (Keybindings key : Keybindings.values()) { // Loop through all keybinds
 			ClientRegistry.registerKeyBinding(key.getKeybind());
 		}
 	}
 
+	// Register the textures for all the junk that has a texture
 	@Override
 	public void init() {
 		ArcaneItems.registerRenders();
+		ArcaneBlocks.reigsterRenders();
 	}
 
 	@Override
 	public void postInit() {
 	}
 
+	// Used to get an instance of the player, not particularly useful but I'll keep it to make my
+	// mod take up more memory! JK this will likely be removed
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().player;

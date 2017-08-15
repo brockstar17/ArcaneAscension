@@ -18,8 +18,14 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * This class handles my input from my mod's keybinds.
+ * 
+ * @author Brockstar17
+ */
 public class KeyInputHandler
 {
+	// Iterate through the keybindings, if a key is pressed return that key, otherwise return null
 	private Keybindings getPressedKey() {
 		for (Keybindings key : Keybindings.values()) {
 			if (key.isPressed())
@@ -28,6 +34,10 @@ public class KeyInputHandler
 		return null;
 	}
 
+	// Key input is handled on the client side
+	// I really don't feel like explaining all this so here is the gist of it.
+	// In this method there is a switch, based on the key returned from the above method, perform
+	// whatever event is required.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void handleKeyInputEvent(InputEvent.KeyInputEvent event) {

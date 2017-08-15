@@ -3,9 +3,9 @@ package brockstar17.network;
 import java.util.List;
 import java.util.Random;
 
+import brockstar17.ArcaneAscension;
 import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;
-import brockstar17.utility.Log;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -121,25 +122,24 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 
 			break;
 		case 3: // Fireball
-			Log.info("Use Fireball");
-			Vec3d look = player.getLookVec();
-			EntitySmallFireball fireball2 = new EntitySmallFireball(world, player, 1, 1, 1);
-			fireball2.setPosition(player.posX + look.xCoord * 1.1, player.posY + look.yCoord + 1, player.posZ + look.zCoord * 1.1);
-			fireball2.accelerationX = look.xCoord;
-			fireball2.accelerationY = look.yCoord;
-			fireball2.accelerationZ = look.zCoord;
+			if (target != null) {
+				Vec3d look = player.getLookVec();
+				EntitySmallFireball fireball2 = new EntitySmallFireball(world, player, 1, 1, 1);
+				fireball2.setPosition(player.posX + look.xCoord * 1.1, player.posY + look.yCoord + 1.5, player.posZ + look.zCoord * 1.1);
+				fireball2.accelerationX = look.xCoord;
+				fireball2.accelerationY = look.yCoord;
+				fireball2.accelerationZ = look.zCoord;
 
-			world.spawnEntity(fireball2);
+				world.spawnEntity(fireball2);
+			}
 			break;
 		case 4: // Heal
-			Log.info("Use Heal");
 			float cHealth = player.getHealth();
 			float mHealth = player.getMaxHealth() - cHealth;
 			float mult = (r.nextFloat() / 4F) + .25F;
 			player.setHealth(cHealth + (mHealth * mult));
 			break;
 		case 5: // Ranged heal
-			Log.info("Use Ranged Heal");
 			if (target != null) {
 
 				cHealth = target.getHealth();
@@ -153,6 +153,9 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 
 			break;
 		case 7: // Freeze
+			if (target != null) {
+				target.addPotionEffect(new PotionEffect(ArcaneAscension.freezeEffect, 200, 0));
+			}
 
 			break;
 		}
@@ -205,6 +208,11 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 
 			break;
 		case 7: // Freeze
+			if (target != null) {
+				for (int i = 0; i < 20; i++) {
+					world.spawnParticle(EnumParticleTypes.WATER_DROP, target.posX + r.nextDouble() * .5, target.posY + r.nextDouble() * .5 + 1, target.posZ + r.nextDouble() * .5, 0, 0, 0, new int[0]);
+				}
+			}
 
 			break;
 		}

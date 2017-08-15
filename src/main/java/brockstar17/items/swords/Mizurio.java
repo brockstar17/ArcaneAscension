@@ -14,4 +14,5 @@ public class Mizurio extends ItemSword
 		this.setRegistryName(ArcaneAscension.prependModID(name));
 		this.setCreativeTab(CreativeTabs.COMBAT);
 	}
+
 }

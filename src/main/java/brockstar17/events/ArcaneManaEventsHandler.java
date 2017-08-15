@@ -2,13 +2,19 @@ package brockstar17.events;
 
 import java.util.Random;
 
+import brockstar17.capability.learned.ILearnedSpells;
+import brockstar17.capability.learned.LearnedProvider;
 import brockstar17.capability.mana.ArcaneManaProvider;
 import brockstar17.capability.mana.IArcaneMana;
 import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;
+import brockstar17.items.ArcaneItems;
+import brockstar17.network.MessageActiveSlotChange;
 import brockstar17.network.MessageAssignSpell;
+import brockstar17.network.MessageLearnSpell;
 import brockstar17.network.MessageManaChange;
 import brockstar17.network.NetworkHandler;
+import brockstar17.utility.ArcaneUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,7 +22,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 /**
  * This class handles vanilla events involving Arcane Mana
@@ -28,71 +33,96 @@ public class ArcaneManaEventsHandler
 	private Random r = new Random();
 	private Capability<IArcaneMana> cmana = ArcaneManaProvider.MANA;
 	private Capability<IArcaneSpells> cspells = ArcaneSpellsProvider.SPELLS;
+	private Capability<ILearnedSpells> cls = LearnedProvider.LEARNED;
 
 	@SubscribeEvent
-	public void playerKillMob(LivingDeathEvent e) {
+	public void entityDied(LivingDeathEvent e) {
+		// If mob killed by player
 		if (e.getSource().getEntity() instanceof EntityPlayer) {
+			// Player instance
 			EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
+			// The mob killed
 			EntityLiving target = (EntityLiving) e.getEntity();
-			IArcaneMana mana = getInstance(player);
-			int gm = (int) (target.getMaxHealth() / 2 + 1);
+			// Instance of mana capability
+			IArcaneMana mana = player.getCapability(cmana, null);
+			// The max amount of mana that may be gained
+			int gm = (int) (target.getMaxHealth() / 4 + 1);
+			// Random.nextInt cannot have negative bound, the above value breaks that rule
+			// occasionally when killing baby slimes, although I'm not really sure why this is
+			// probably a bug and should be fixed in future releases.
 			if (gm > 0) {
+				// Gain a random amount of mana between zero and 1/4 the killed mob's health. Should
+				// be updated in future to always give 1/4 of a bosses health in mana
 				mana.gainMana(r.nextInt(gm));
 			}
 			else {
-				mana.gainMana(1);
+				// The above code had a negative bound so give the player either 0 or 1 mana
+				mana.gainMana(r.nextInt(2));
 			}
 			mana.gainMana(gm);
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 		}
-	}
 
-	@SubscribeEvent
-	public void handlePlayerDeath(LivingDeathEvent e) {
+		// The mob has died of fire damage
+		if (e.getSource().isFireDamage()) {
+			// The Random from the world instance
+			Random r = e.getEntity().world.rand;
+			// 1 in five chance to drop arcane ash
+			if (r.nextInt(5) == 3) {
+				// A cool conditional resulting in a 1 in 9 chance of dropping between 1 and 5 ash
+				// otherwise drop 1 ash
+				e.getEntityLiving().dropItem(ArcaneItems.arcane_ash, r.nextInt(9) == 5 ? r.nextInt(5) + 1 : 1);
+			}
+		}
+
+		// The entity that died is the player handle all data transfer that needs to be saved or
+		// updated on death
 		if (e.getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) e.getEntity();
-			IArcaneMana mana = getInstance(player);
+			EntityPlayer player = (EntityPlayer) e.getEntity(); // Player instance
+			IArcaneMana mana = player.getCapability(cmana, null); // An instance of mana capabilty
 
-			mana.setMana(0);
+			mana.setMana(0); // Set the player's mana to zero
+			// Update the mana value on the client side, needed for rendering mana bar correctly
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 
+			// An instance of learned spells capability
+			ILearnedSpells ls = player.getCapability(cls, null);
+			// Persist the spells that the player has learned
+			NetworkHandler.sendToServer(new MessageLearnSpell(ArcaneUtils.intArrBoolArr(ls.getLearnedArray())));
+
+			// An instance of the spells capabilty
+			IArcaneSpells spells = player.getCapability(cspells, null);
+			// Persist the assigned spells
+			NetworkHandler.sendToServer(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)));
+
 		}
-	}
-
-	@SubscribeEvent
-	public void handlePlayerRespawn(PlayerRespawnEvent e) {
-
-		EntityPlayer player = e.player;
-		IArcaneSpells spells = player.getCapability(cspells, null);
-		NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
-
 	}
 
 	@SubscribeEvent()
 	public void onPlayerJoinWorld(EntityJoinWorldEvent e) {
-
+		// Check if the event's entity object is an instance of a player entity
 		if (e.getEntity() instanceof EntityPlayerMP) {
 			EntityPlayer player = (EntityPlayer) e.getEntity();
-			IArcaneMana mana = getInstance(player);
+			// Get an instance of the mana capability
+			IArcaneMana mana = player.getCapability(cmana, null);
+			// Get an instance of the spells capability
 			IArcaneSpells spells = player.getCapability(cspells, null);
+			// Get an instance of the learned spells capability
+			ILearnedSpells ls = player.getCapability(cls, null);
+			// There is no need to update client side mana as the default value is zero anyway
 			if (mana.getMana() != 0)
+				// Load the player's mana to client side, this is for rendering purposes
 				NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 
+			// Load the active spells when player joins the world
 			NetworkHandler.sendTo(new MessageAssignSpell(spells.getIcon(0), spells.getIcon(1), spells.getIcon(2)), (EntityPlayerMP) player);
-
+			// Load the active spell slot, this should fix the bug of the wrong spell firing after
+			// joining world
+			NetworkHandler.sendTo(new MessageActiveSlotChange(spells.getActiveSlot()), (EntityPlayerMP) player);
+			// Load the spells that the player has learned
+			NetworkHandler.sendTo(new MessageLearnSpell(ArcaneUtils.intArrBoolArr(ls.getLearnedArray())), (EntityPlayerMP) player);
 		}
 
-	}
-
-	/**
-	 * Get an instance of IArcaneMana.
-	 * 
-	 * @param player
-	 *            an instance of the player
-	 * @return an instance of IArcaneMana
-	 */
-	private IArcaneMana getInstance(EntityPlayer player) {
-		return player.getCapability(cmana, null);
 	}
 
 }

@@ -18,6 +18,8 @@ public class ArcaneItems
 	public static Item kazio;
 	public static Item mizurio;
 	public static Item seishinio;
+
+	public static Item arcane_ash;
 	// End of item fields
 
 	/**
@@ -32,15 +34,9 @@ public class ArcaneItems
 		mizurio = new Mizurio("mizurio");
 		seishinio = new Seishinio("seishinio");
 
+		arcane_ash = new ArcaneAsh("arcane_ash");
+
 		registerItems();
-	}
-
-	/**
-	 * Do anything with items that needs to be done during initialization.<br>
-	 * This method is likely not going to be used and may be deprecated in a future release.
-	 */
-	public static void init() {
-
 	}
 
 	/**
@@ -51,13 +47,14 @@ public class ArcaneItems
 		GameRegistry.register(kazio);
 		GameRegistry.register(mizurio);
 		GameRegistry.register(seishinio);
+		GameRegistry.register(arcane_ash);
 	}
 
 	/**
 	 * Register the item textures, must be called during client-side init
 	 */
 	public static void registerRenders() {
-
+		registerRender(arcane_ash);
 	}
 
 	/**

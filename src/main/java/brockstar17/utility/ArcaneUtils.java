@@ -135,8 +135,34 @@ public class ArcaneUtils
 		return -1; // Default to this and handle elsewhere.
 	}
 
-	public static double linearEquation(double slope, double x, double b) {
-		return slope * x + b;
+	/**
+	 * Convert an integer array of 1's and 0's to boolean array
+	 * 
+	 * @param arr
+	 *            the integer array
+	 * @return the converted boolean array
+	 */
+	public static boolean[] intArrBoolArr(int[] arr) {
+		boolean[] temp = new boolean[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			temp[i] = arr[i] == 0 ? false : true;
+		}
+		return temp;
+	}
+
+	/**
+	 * Convert a boolean array to and integer array of 1's and 0's
+	 * 
+	 * @param arr
+	 *            the boolean array
+	 * @return the converted integer array
+	 */
+	public static int[] boolArrIntArr(boolean[] arr) {
+		int[] temp = new int[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			temp[i] = arr[i] == false ? 0 : 1;
+		}
+		return temp;
 	}
 
 }

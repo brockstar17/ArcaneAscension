@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 import brockstar17.Reference;
+import brockstar17.capability.learned.ILearnedSpells;
+import brockstar17.capability.learned.LearnedProvider;
 import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;
 import brockstar17.network.MessageAssignSpell;
@@ -24,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 public class GuiSpellSelect extends GuiScreen
 {
 	private Minecraft mc;
+	private EntityPlayer player;
 	private String[] elements = { "Air", "Earth", "Fire", "Spirit", "Water" };
 	private int[] colors = { 4387918, 7159569, 15870985, 5178163, 4524018 };
 
@@ -31,12 +34,14 @@ public class GuiSpellSelect extends GuiScreen
 	private int slotToHighlight = -1;
 
 	private Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
+	private Capability<ILearnedSpells> cls = LearnedProvider.LEARNED;
 
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/arcane_gui.png");
 
 	public GuiSpellSelect(Minecraft mc)
 	{
 		this.mc = mc;
+		this.player = mc.player;
 		this.slotCorners = new ArrayList<Point>();
 	}
 
@@ -80,40 +85,39 @@ public class GuiSpellSelect extends GuiScreen
 	protected void keyTyped(char typedChar, int key) throws IOException {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		IArcaneSpells spell = player.getCapability(cslot, null);
-		switch (key) {
-		case Keyboard.KEY_T:
+
+		// Assign to first slot
+		if (key == Keyboard.KEY_T || key == Keyboard.KEY_1) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(SpellIcons.getSpellId(slotToHighlight), spell.getIcon(1), spell.getIcon(2)));
 			}
+			// Spell is already assigned to a slot
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
 			}
-			break;
-		case Keyboard.KEY_G:
+		}
+		// Assign to second slot
+		else if (key == Keyboard.KEY_G || key == Keyboard.KEY_2) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), SpellIcons.getSpellId(slotToHighlight), spell.getIcon(2)));
 			}
+			// Spell is already assigned to a slot
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
 			}
-			break;
-		case Keyboard.KEY_V:
+		}
+		// Assign to third slot
+		else if (key == Keyboard.KEY_V || key == Keyboard.KEY_3) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), spell.getIcon(1), SpellIcons.getSpellId(slotToHighlight)));
 			}
+			// Spell is already assigned to a slot
 			else {
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
 			}
-			break;
-		case Keyboard.KEY_Y:
+		}
+		else if (key == Keyboard.KEY_Y || key == Keyboard.KEY_E) {
 			this.mc.displayGuiScreen(null);
-			break;
-		case Keyboard.KEY_E:
-			this.mc.displayGuiScreen(null);
-			break;
-		default:
-
-			break;
 		}
 		super.keyTyped(typedChar, key);
 	}
@@ -158,6 +162,8 @@ public class GuiSpellSelect extends GuiScreen
 	}
 
 	private void drawSpellIcons(int sx, int sy) {
+		ILearnedSpells ls = player.getCapability(cls, null);
+
 		sx += 3;
 		sy += 3;
 		int rx = sx;
@@ -165,8 +171,13 @@ public class GuiSpellSelect extends GuiScreen
 		for (int r = 0; r < 5; r++) {
 			sx = rx;
 			for (int c = 0; c < 5; c++) {
-
 				drawTexturedModalRect(sx, sy, tsx + (18 * c), tsy + (18 * r), 16, 16);
+
+				if (!player.isCreative() && SpellIcons.getSpellId(getSlotClicked(sx, sy)) != -1) {
+					if (!ls.isSpellLearned(SpellIcons.getSpellId(getSlotClicked(sx, sy))))
+						drawTexturedModalRect(sx, sy, 70, 5, 16, 16);
+				}
+
 				sx += 22;
 
 			}
