@@ -45,21 +45,16 @@ public class ArcaneManaEventsHandler
 			EntityLiving target = (EntityLiving) e.getEntity();
 			// Instance of mana capability
 			IArcaneMana mana = player.getCapability(cmana, null);
-			// The max amount of mana that may be gained
-			int gm = (int) (target.getMaxHealth() / 4 + 1);
-			// Random.nextInt cannot have negative bound, the above value breaks that rule
-			// occasionally when killing baby slimes, although I'm not really sure why this is
-			// probably a bug and should be fixed in future releases.
-			if (gm > 0) {
-				// Gain a random amount of mana between zero and 1/4 the killed mob's health. Should
-				// be updated in future to always give 1/4 of a bosses health in mana
-				mana.gainMana(r.nextInt(gm));
+
+			// Gain 0-2 mana if the mob was not a boss
+			if (target.isNonBoss()) {
+				mana.gainMana(r.nextInt(3));
 			}
+			// If it is a boss, gain 1/4 to 1/2 of the boss' health
 			else {
-				// The above code had a negative bound so give the player either 0 or 1 mana
-				mana.gainMana(r.nextInt(2));
+				mana.gainMana((int) (target.getMaxHealth() / 4 + (r.nextInt((int) (target.getMaxHealth() / 4)))));
 			}
-			mana.gainMana(gm);
+
 			NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
 		}
 

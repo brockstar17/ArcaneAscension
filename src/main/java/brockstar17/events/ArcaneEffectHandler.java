@@ -2,11 +2,16 @@ package brockstar17.events;
 
 import brockstar17.ArcaneAscension;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ArcaneEffectHandler
 {
+	private static ArcaneAscension aa;
+	private Potion[] pcd = { aa.entombCD, aa.fireballCD, aa.freezeCD, aa.gatewayCD, aa.healCD, aa.lightningCD, aa.rHealCD, aa.whirlwindCD };
+
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent e) {
 
@@ -19,7 +24,6 @@ public class ArcaneEffectHandler
 			if (target.getActivePotionEffect(ArcaneAscension.freezeEffect).getDuration() == 0) {
 				target.removePotionEffect(ArcaneAscension.freezeEffect); // It was so remove the
 																		 // effect
-				return; // Nothing left to do, return
 			}
 
 			// Handle the target's motion
@@ -27,5 +31,23 @@ public class ArcaneEffectHandler
 			target.setVelocity(0, 0, 0); // Prevents any other movement
 		}
 
+		// The target is a player entity
+		if (target instanceof EntityPlayer) {
+			// Iterate through the cooldown effects
+			for (int i = 0; i < pcd.length; i++) {
+				Potion p = pcd[i];
+				// Is the current cooldown effect active
+				if (target.isPotionActive(p)) {
+					// Is the duration zero
+					if (target.getActivePotionEffect(p).getDuration() == 0) {
+						// It was so remove the effect
+						target.removePotionEffect(p);
+					}
+
+				}
+			}
+		}
+
 	}
+
 }

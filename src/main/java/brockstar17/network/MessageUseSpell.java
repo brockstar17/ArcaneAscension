@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -22,11 +23,15 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 public class MessageUseSpell extends MessageBase<MessageUseSpell>
 {
+
+	private static ArcaneAscension aa;
+	private Potion[] pcd = { aa.entombCD, aa.fireballCD, aa.freezeCD, aa.gatewayCD, aa.healCD, aa.lightningCD, aa.rHealCD, aa.whirlwindCD };
 
 	private int spellId;
 	private int entId = -1;
@@ -78,8 +83,11 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 			target = (EntityLiving) world.getEntityByID(message.entId);
 		}
 
+		if (!player.isPotionActive(pcd[spellId])) {
+			NetworkHandler.sendTo(new MessageUseSpell(spellId, message.entId), (EntityPlayerMP) player);
+		}
+
 		useSpell(spellId, world, pos, player, target);
-		NetworkHandler.sendTo(new MessageUseSpell(spellId, message.entId), (EntityPlayerMP) player);
 
 	}
 
@@ -87,74 +95,142 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 		Random r = new Random();
 		switch (id) {
 		case 0: // Whirlwind
-			AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - 8, pos.getY() - 1, pos.getZ() - 8, pos.getX() + 8, pos.getY() + 3, pos.getZ() + 8);
-			List<EntityLiving> l = world.getEntitiesWithinAABB(EntityLiving.class, bb);
-			for (EntityLiving i : l) {
-				Vec3d vp = player.getPositionVector();
-				Vec3d vi = i.getPositionVector();
-				int sx = (int) (vp.xCoord - vi.xCoord);
-				int sz = (int) (vp.zCoord - vi.zCoord);
-				i.knockBack(player, 2F, sx, sz);
+			if (!player.isPotionActive(pcd[id])) {
+				AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - 8, pos.getY() - 1, pos.getZ() - 8, pos.getX() + 8, pos.getY() + 3, pos.getZ() + 8);
+				List<EntityLiving> l = world.getEntitiesWithinAABB(EntityLiving.class, bb);
+				for (EntityLiving i : l) {
+					Vec3d vp = player.getPositionVector();
+					Vec3d vi = i.getPositionVector();
+					int sx = (int) (vp.xCoord - vi.xCoord);
+					int sz = (int) (vp.zCoord - vi.zCoord);
+					i.knockBack(player, 2F, sx, sz);
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+				}
 			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+			}
+
 			break;
 		case 1: // Lightning
-			if (target != null) {
-				target.setHealth(target.getHealth() - (r.nextFloat() * 4));
-				if (target.getHealth() <= 0 && !target.isDead) {
-					target.onDeath(DamageSource.causePlayerDamage(player));
+
+			if (!player.isPotionActive(pcd[id])) {
+				if (target != null) {
+					target.setHealth(target.getHealth() - (r.nextFloat() * 4));
+					if (target.getHealth() <= 0 && !target.isDead) {
+						target.onDeath(DamageSource.causePlayerDamage(player));
+					}
+					int chance = r.nextInt(20);
+					if (chance == 1) {
+						target.setFire(20);
+					}
+
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
 				}
-				int chance = r.nextInt(20);
-				if (chance == 1) {
-					target.setFire(20);
-				}
+
 			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+			}
+
 			break;
 		case 2: // Entomb
-			if (target != null) {
 
-				world.setBlockState(target.getPosition(), Blocks.DIRT.getDefaultState(), 2);
-				target.setHealth(target.getHealth() - 0.5F);
-				world.destroyBlock(target.getPosition(), false);
-				if (target.getHealth() <= 0 && !target.isDead) {
-					target.onDeath(DamageSource.causePlayerDamage(player));
+			if (!player.isPotionActive(pcd[id])) {
+				if (target != null) {
+
+					world.setBlockState(target.getPosition(), Blocks.DIRT.getDefaultState(), 2);
+					target.setHealth(target.getHealth() - 0.5F);
+					world.destroyBlock(target.getPosition(), false);
+					if (target.getHealth() <= 0 && !target.isDead) {
+						target.onDeath(DamageSource.causePlayerDamage(player));
+					}
+
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
 				}
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 		case 3: // Fireball
-			if (target != null) {
-				Vec3d look = player.getLookVec();
-				EntitySmallFireball fireball2 = new EntitySmallFireball(world, player, 1, 1, 1);
-				fireball2.setPosition(player.posX + look.xCoord * 1.1, player.posY + look.yCoord + 1.5, player.posZ + look.zCoord * 1.1);
-				fireball2.accelerationX = look.xCoord;
-				fireball2.accelerationY = look.yCoord;
-				fireball2.accelerationZ = look.zCoord;
 
-				world.spawnEntity(fireball2);
+			if (!player.isPotionActive(pcd[id])) {
+				if (target != null) {
+					Vec3d look = player.getLookVec();
+					EntitySmallFireball fireball2 = new EntitySmallFireball(world, player, 1, 1, 1);
+					fireball2.setPosition(player.posX + look.xCoord * 1.1, player.posY + look.yCoord + 1.5, player.posZ + look.zCoord * 1.1);
+					fireball2.accelerationX = look.xCoord;
+					fireball2.accelerationY = look.yCoord;
+					fireball2.accelerationZ = look.zCoord;
+
+					world.spawnEntity(fireball2);
+
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+				}
 			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+			}
+
 			break;
 		case 4: // Heal
-			float cHealth = player.getHealth();
-			float mHealth = player.getMaxHealth() - cHealth;
-			float mult = (r.nextFloat() / 4F) + .25F;
-			player.setHealth(cHealth + (mHealth * mult));
-			break;
-		case 5: // Ranged heal
-			if (target != null) {
 
-				cHealth = target.getHealth();
-				mHealth = target.getMaxHealth() - cHealth;
-				mult = (r.nextFloat() / 4F) + .25F;
-				target.setHealth(cHealth + (mHealth * mult));
+			if (!player.isPotionActive(pcd[id])) {
+				float cHealth = player.getHealth();
+				float mHealth = player.getMaxHealth() - cHealth;
+				float mult = (r.nextFloat() / 4F) + .25F;
+				player.setHealth(cHealth + (mHealth * mult));
+
+				player.addPotionEffect(new PotionEffect(pcd[id], 200));
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
+		case 5: // Ranged heal
+
+			if (!player.isPotionActive(pcd[id])) {
+				if (target != null) {
+
+					float cHealth = target.getHealth();
+					float mHealth = target.getMaxHealth() - cHealth;
+					float mult = (r.nextFloat() / 4F) + .25F;
+					target.setHealth(cHealth + (mHealth * mult));
+
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+				}
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+			}
+
+			break;
+
 		case 6: // Gateway
+
+			if (!player.isPotionActive(pcd[id])) {
+
+				player.addPotionEffect(new PotionEffect(pcd[id], 200));
+
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+			}
 
 			break;
 		case 7: // Freeze
-			if (target != null) {
-				target.addPotionEffect(new PotionEffect(ArcaneAscension.freezeEffect, 200, 0));
+
+			if (!player.isPotionActive(pcd[id])) {
+				if (target != null) {
+					target.addPotionEffect(new PotionEffect(ArcaneAscension.freezeEffect, 200, 0));
+					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+				}
+			}
+			else {
+				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;

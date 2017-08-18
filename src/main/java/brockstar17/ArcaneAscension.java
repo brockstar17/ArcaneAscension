@@ -13,6 +13,14 @@ import brockstar17.capability.spells.ArcaneSpellsStorage;
 import brockstar17.capability.spells.IArcaneSpells;
 import brockstar17.client.gui.RenderArcaneGui;
 import brockstar17.effects.FreezeEffect;
+import brockstar17.effects.cooldowns.EntombCD;
+import brockstar17.effects.cooldowns.FireballCD;
+import brockstar17.effects.cooldowns.FreezeCD;
+import brockstar17.effects.cooldowns.GatewayCD;
+import brockstar17.effects.cooldowns.HealCD;
+import brockstar17.effects.cooldowns.LightningCD;
+import brockstar17.effects.cooldowns.RHealCD;
+import brockstar17.effects.cooldowns.WhirlwindCD;
 import brockstar17.events.ArcaneEffectHandler;
 import brockstar17.events.ArcaneGuiHandler;
 import brockstar17.events.ArcaneManaEventsHandler;
@@ -54,7 +62,14 @@ public class ArcaneAscension
 
 	// Declare potion effects here
 	public static Potion freezeEffect = new FreezeEffect(true, 0).setIconIndex(0, 0).setRegistryName(Reference.MODID, "potion.freezeEffect").setPotionName("Frozen");
-
+	public static Potion entombCD = new EntombCD(false, 0).setRegistryName(Reference.MODID, "potion.ecd");
+	public static Potion fireballCD = new FireballCD(false, 0).setRegistryName(Reference.MODID, "potion.fbcd");
+	public static Potion freezeCD = new FreezeCD(false, 0).setRegistryName(Reference.MODID, "potion.fecd");
+	public static Potion gatewayCD = new GatewayCD(false, 0).setRegistryName(Reference.MODID, "potion.gcd");
+	public static Potion healCD = new HealCD(false, 0).setRegistryName(Reference.MODID, "potion.hcd");
+	public static Potion lightningCD = new LightningCD(false, 0).setRegistryName(Reference.MODID, "potion.lcd");
+	public static Potion rHealCD = new RHealCD(false, 0).setRegistryName(Reference.MODID, "potion.rhcd");
+	public static Potion whirlwindCD = new WhirlwindCD(false, 0).setRegistryName(Reference.MODID, "potion.wcd");
 	// End of potion effects
 
 	@EventHandler

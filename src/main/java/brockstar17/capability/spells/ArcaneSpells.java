@@ -1,10 +1,14 @@
 package brockstar17.capability.spells;
 
+import java.util.ArrayList;
+
 import brockstar17.utility.Log;
 
 public class ArcaneSpells implements IArcaneSpells
 {
 	private int[] initSpellArray = { 0, -1, -1, -1 };
+	private int[] cooldowns = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	private ArrayList<Integer> activeCD = new ArrayList<Integer>();
 
 	// Active spell slot = initSpellArray[0];
 	// Icon 1 = initSpellArray[1];
