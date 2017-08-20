@@ -1,14 +1,11 @@
 package brockstar17.capability.spells;
 
-import java.util.ArrayList;
-
 import brockstar17.utility.Log;
 
 public class ArcaneSpells implements IArcaneSpells
 {
 	private int[] initSpellArray = { 0, -1, -1, -1 };
 	private int[] cooldowns = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	private ArrayList<Integer> activeCD = new ArrayList<Integer>();
 
 	// Active spell slot = initSpellArray[0];
 	// Icon 1 = initSpellArray[1];
@@ -20,7 +17,7 @@ public class ArcaneSpells implements IArcaneSpells
 	public void initSpells(int[] arr) {
 		this.initSpellArray = arr;
 		if (arr.length != 4) {
-			Log.error("Spell initialization array is i.nvalid, this is a bug");
+			Log.error("Spell initialization array is invalid, this is a bug");
 		}
 
 	}
@@ -50,6 +47,29 @@ public class ArcaneSpells implements IArcaneSpells
 			return -1;
 		}
 
+	}
+
+	@Override
+	public int[] getCooldowns() {
+
+		return this.cooldowns;
+	}
+
+	@Override
+	public void setCooldowns(int[] arr) {
+		this.cooldowns = arr;
+	}
+
+	@Override
+	public int getCooldown(int id) {
+
+		return this.cooldowns[id];
+	}
+
+	@Override
+	public void setCooldown(int id, int duration) {
+
+		this.cooldowns[id] = duration;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Random;
 import brockstar17.ArcaneAscension;
 import brockstar17.capability.spells.ArcaneSpellsProvider;
 import brockstar17.capability.spells.IArcaneSpells;
+import brockstar17.utility.ArcaneUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -23,16 +23,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 public class MessageUseSpell extends MessageBase<MessageUseSpell>
 {
 
-	private static ArcaneAscension aa;
-	private Potion[] pcd = { aa.entombCD, aa.fireballCD, aa.freezeCD, aa.gatewayCD, aa.healCD, aa.lightningCD, aa.rHealCD, aa.whirlwindCD };
-
+	private static ArcaneUtils au;
 	private int spellId;
 	private int entId = -1;
 
@@ -83,7 +80,7 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 			target = (EntityLiving) world.getEntityByID(message.entId);
 		}
 
-		if (!player.isPotionActive(pcd[spellId])) {
+		if (!player.isPotionActive(au.pcd[spellId])) {
 			NetworkHandler.sendTo(new MessageUseSpell(spellId, message.entId), (EntityPlayerMP) player);
 		}
 
@@ -95,7 +92,7 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 		Random r = new Random();
 		switch (id) {
 		case 0: // Whirlwind
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - 8, pos.getY() - 1, pos.getZ() - 8, pos.getX() + 8, pos.getY() + 3, pos.getZ() + 8);
 				List<EntityLiving> l = world.getEntitiesWithinAABB(EntityLiving.class, bb);
 				for (EntityLiving i : l) {
@@ -104,17 +101,17 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 					int sx = (int) (vp.xCoord - vi.xCoord);
 					int sz = (int) (vp.zCoord - vi.zCoord);
 					i.knockBack(player, 2F, sx, sz);
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+
 				}
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+
+				player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
+
 			}
 
 			break;
 		case 1: // Lightning
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				if (target != null) {
 					target.setHealth(target.getHealth() - (r.nextFloat() * 4));
 					if (target.getHealth() <= 0 && !target.isDead) {
@@ -125,18 +122,15 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 						target.setFire(20);
 					}
 
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+					player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 				}
 
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 		case 2: // Entomb
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				if (target != null) {
 
 					world.setBlockState(target.getPosition(), Blocks.DIRT.getDefaultState(), 2);
@@ -146,17 +140,14 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 						target.onDeath(DamageSource.causePlayerDamage(player));
 					}
 
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+					player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 				}
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 		case 3: // Fireball
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				if (target != null) {
 					Vec3d look = player.getLookVec();
 					EntitySmallFireball fireball2 = new EntitySmallFireball(world, player, 1, 1, 1);
@@ -167,32 +158,26 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 
 					world.spawnEntity(fireball2);
 
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+					player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 				}
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 		case 4: // Heal
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				float cHealth = player.getHealth();
 				float mHealth = player.getMaxHealth() - cHealth;
 				float mult = (r.nextFloat() / 4F) + .25F;
 				player.setHealth(cHealth + (mHealth * mult));
 
-				player.addPotionEffect(new PotionEffect(pcd[id], 200));
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
+				player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 			}
 
 			break;
 		case 5: // Ranged heal
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				if (target != null) {
 
 					float cHealth = target.getHealth();
@@ -200,37 +185,28 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 					float mult = (r.nextFloat() / 4F) + .25F;
 					target.setHealth(cHealth + (mHealth * mult));
 
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+					player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 				}
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 
 		case 6: // Gateway
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 
-				player.addPotionEffect(new PotionEffect(pcd[id], 200));
+				player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;
 		case 7: // Freeze
 
-			if (!player.isPotionActive(pcd[id])) {
+			if (!player.isPotionActive(au.pcd[id])) {
 				if (target != null) {
 					target.addPotionEffect(new PotionEffect(ArcaneAscension.freezeEffect, 200, 0));
-					player.addPotionEffect(new PotionEffect(pcd[id], 200));
+					player.addPotionEffect(new PotionEffect(au.pcd[id], 200));
 				}
-			}
-			else {
-				player.sendMessage(new TextComponentString("That spell is on cooldown for " + player.getActivePotionEffect(pcd[id]).getDuration() / 20 + " seconds"));
 			}
 
 			break;

@@ -13,6 +13,7 @@ public class ArcaneSpellsStorage implements IStorage<IArcaneSpells>
 
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setIntArray("initArray", instance.getInitSpellsArray());
+		tag.setIntArray("cooldowns", instance.getCooldowns());
 		return tag;
 	}
 
@@ -21,5 +22,6 @@ public class ArcaneSpellsStorage implements IStorage<IArcaneSpells>
 
 		NBTTagCompound tag = (NBTTagCompound) nbt;
 		instance.initSpells(tag.getIntArray("initArray"));
+		instance.setCooldowns(tag.getIntArray("cooldowns"));
 	}
 }

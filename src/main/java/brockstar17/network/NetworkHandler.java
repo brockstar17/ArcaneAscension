@@ -36,6 +36,7 @@ public class NetworkHandler
 		INSTANCE.registerMessage(MessageEntityLookingAt.class, MessageEntityLookingAt.class, 8, Side.SERVER);
 		INSTANCE.registerMessage(MessageLearnSpell.class, MessageLearnSpell.class, 9, Side.CLIENT);
 		INSTANCE.registerMessage(MessageLearnSpell.class, MessageLearnSpell.class, 10, Side.SERVER);
+		INSTANCE.registerMessage(MessageSyncCooldown.class, MessageSyncCooldown.class, 11, Side.CLIENT);
 	}
 
 	// Send to the server

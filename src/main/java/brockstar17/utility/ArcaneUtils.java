@@ -2,9 +2,11 @@ package brockstar17.utility;
 
 import java.util.List;
 
+import brockstar17.ArcaneAscension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -14,6 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ArcaneUtils
 {
+	private static ArcaneAscension aa;
+	public static Potion[] pcd = { aa.whirlwindCD, aa.lightningCD, aa.entombCD, aa.fireballCD, aa.healCD, aa.rHealCD, aa.gatewayCD, aa.freezeCD };
+
 	/**
 	 * Returns the ordinal direction that the player is facing.
 	 * 

@@ -64,10 +64,34 @@ public class GuiActiveSpells extends Gui
 		// Draw spell icons
 		Capability<IArcaneSpells> cslot = ArcaneSpellsProvider.SPELLS;
 		IArcaneSpells slot = player.getCapability(cslot, null);
+
+		int[] cooldowns = slot.getCooldowns();
+
 		xPos += 2;
+		// Slot 1
 		drawTexturedModalRect(xPos, 18, SpellIcons.getTextX(slot.getIcon(0)), SpellIcons.getTextY(slot.getIcon(0)), 16, 16);
+
+		// Slot 2
 		drawTexturedModalRect(xPos, 39, SpellIcons.getTextX(slot.getIcon(1)), SpellIcons.getTextY(slot.getIcon(1)), 16, 16);
+
+		// Slot 3
 		drawTexturedModalRect(xPos, 60, SpellIcons.getTextX(slot.getIcon(2)), SpellIcons.getTextY(slot.getIcon(2)), 16, 16);
+
+		// Cool 1
+		if (slot.getIcon(0) != -1) {
+			drawCooldownOverlay(cooldowns[slot.getIcon(0)], xPos, 18);
+		}
+
+		// Cool 2
+		if (slot.getIcon(1) != -1) {
+			drawCooldownOverlay(cooldowns[slot.getIcon(1)], xPos, 39);
+		}
+
+		// Cool 3
+		if (slot.getIcon(2) != -1) {
+			drawCooldownOverlay(cooldowns[slot.getIcon(2)], xPos, 60);
+		}
+
 	}
 
 	private int getActiveSlot(EntityPlayer player) {
@@ -78,7 +102,15 @@ public class GuiActiveSpells extends Gui
 		return slot.getActiveSlot();
 	}
 
-	private void drawActiveSpells() {
+	private void drawCooldownOverlay(int dur, int x, int y) {
+		if (dur > 0) {
+
+			int raise = (16 * dur) / 200;
+			// TX = 236 TY = 22
+			// Log.info("Cooldown = " + dur);
+
+			drawTexturedModalRect(x, y, 237, 22 - (16 - raise), 16, 16);
+		}
 
 	}
 }

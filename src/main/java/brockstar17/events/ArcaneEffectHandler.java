@@ -1,16 +1,20 @@
 package brockstar17.events;
 
 import brockstar17.ArcaneAscension;
+import brockstar17.network.MessageSyncCooldown;
+import brockstar17.network.NetworkHandler;
+import brockstar17.utility.ArcaneUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ArcaneEffectHandler
 {
-	private static ArcaneAscension aa;
-	private Potion[] pcd = { aa.entombCD, aa.fireballCD, aa.freezeCD, aa.gatewayCD, aa.healCD, aa.lightningCD, aa.rHealCD, aa.whirlwindCD };
+
+	private static ArcaneUtils au;
 
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent e) {
@@ -34,14 +38,21 @@ public class ArcaneEffectHandler
 		// The target is a player entity
 		if (target instanceof EntityPlayer) {
 			// Iterate through the cooldown effects
-			for (int i = 0; i < pcd.length; i++) {
-				Potion p = pcd[i];
+			for (int i = 0; i < au.pcd.length; i++) {
+				Potion p = au.pcd[i];
 				// Is the current cooldown effect active
 				if (target.isPotionActive(p)) {
 					// Is the duration zero
 					if (target.getActivePotionEffect(p).getDuration() == 0) {
 						// It was so remove the effect
+						// NetworkHandler.sendTo(new MessageSyncCooldown(i, 0), (EntityPlayerMP)
+						// target);
+
 						target.removePotionEffect(p);
+					}
+					else {
+						NetworkHandler.sendTo(new MessageSyncCooldown(i, target.getActivePotionEffect(p).getDuration() - 1), (EntityPlayerMP) target);
+
 					}
 
 				}
