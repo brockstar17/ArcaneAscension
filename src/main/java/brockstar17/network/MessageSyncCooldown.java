@@ -44,7 +44,7 @@ public class MessageSyncCooldown extends MessageBase<MessageSyncCooldown>
 
 	@Override
 	public void handleServerSide(MessageSyncCooldown message, EntityPlayer player) {
-		// player.addPotionEffect(new PotionEffect(ArcaneUtils.pcd[message.id], message.duration));
+
 	}
 
 }

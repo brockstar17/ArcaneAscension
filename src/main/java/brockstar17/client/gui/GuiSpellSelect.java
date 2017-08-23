@@ -85,35 +85,45 @@ public class GuiSpellSelect extends GuiScreen
 	protected void keyTyped(char typedChar, int key) throws IOException {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		IArcaneSpells spell = player.getCapability(cslot, null);
+		ILearnedSpells ls = player.getCapability(cls, null);
 
 		// Assign to first slot
 		if (key == Keyboard.KEY_T || key == Keyboard.KEY_1) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(SpellIcons.getSpellId(slotToHighlight), spell.getIcon(1), spell.getIcon(2)));
+
 			}
 			// Spell is already assigned to a slot
 			else {
+
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+
 			}
 		}
 		// Assign to second slot
 		else if (key == Keyboard.KEY_G || key == Keyboard.KEY_2) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), SpellIcons.getSpellId(slotToHighlight), spell.getIcon(2)));
+
 			}
 			// Spell is already assigned to a slot
 			else {
+
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+
 			}
 		}
 		// Assign to third slot
 		else if (key == Keyboard.KEY_V || key == Keyboard.KEY_3) {
 			if (!spellAlreadyActive(slotToHighlight, spell)) {
 				NetworkHandler.sendToServer(new MessageAssignSpell(spell.getIcon(0), spell.getIcon(1), SpellIcons.getSpellId(slotToHighlight)));
+
 			}
 			// Spell is already assigned to a slot
 			else {
+
 				player.sendMessage(new TextComponentString("That spell is already active." + TextFormatting.BOLD));
+
 			}
 		}
 		else if (key == Keyboard.KEY_Y || key == Keyboard.KEY_E) {
@@ -211,6 +221,21 @@ public class GuiSpellSelect extends GuiScreen
 		if (SpellIcons.getSpellId(spell) != -1 && (spells.getIcon(0) == SpellIcons.getSpellId(spell) || spells.getIcon(1) == SpellIcons.getSpellId(spell) || spells.getIcon(2) == SpellIcons.getSpellId(spell))) {
 			return true;
 		}
+		return false;
+	}
+
+	private boolean isSpellLearned(int spell, ILearnedSpells ls, EntityPlayer player) {
+
+		if (player.isCreative()) {
+			return true;
+		}
+
+		if (spell != -1) {
+			if (ls.isSpellLearned(spell)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 

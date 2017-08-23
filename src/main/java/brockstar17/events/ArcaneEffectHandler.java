@@ -3,7 +3,7 @@ package brockstar17.events;
 import brockstar17.ArcaneAscension;
 import brockstar17.network.MessageSyncCooldown;
 import brockstar17.network.NetworkHandler;
-import brockstar17.utility.ArcaneUtils;
+import brockstar17.utility.ArcaneConstants;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ArcaneEffectHandler
 {
 
-	private static ArcaneUtils au;
+	private static ArcaneConstants au;
 
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent e) {

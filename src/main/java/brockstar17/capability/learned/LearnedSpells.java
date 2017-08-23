@@ -9,8 +9,10 @@ public class LearnedSpells implements ILearnedSpells
 
 	@Override
 	public boolean isSpellLearned(int spell) {
-
-		return this.learned[spell];
+		if (spell != -1) {
+			return this.learned[spell];
+		}
+		return false;
 	}
 
 	@Override

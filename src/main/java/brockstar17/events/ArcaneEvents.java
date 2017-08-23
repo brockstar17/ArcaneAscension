@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * 
  * @author Brockstar17
  */
-public class ArcaneManaEventsHandler
+public class ArcaneEvents
 {
 	private Random r = new Random();
 	private Capability<IArcaneMana> cmana = ArcaneManaProvider.MANA;

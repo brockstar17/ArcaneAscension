@@ -23,7 +23,7 @@ import brockstar17.effects.cooldowns.RHealCD;
 import brockstar17.effects.cooldowns.WhirlwindCD;
 import brockstar17.events.ArcaneEffectHandler;
 import brockstar17.events.ArcaneGuiHandler;
-import brockstar17.events.ArcaneManaEventsHandler;
+import brockstar17.events.ArcaneEvents;
 import brockstar17.items.ArcaneItems;
 import brockstar17.network.NetworkHandler;
 import brockstar17.proxy.CommonProxy;
@@ -101,7 +101,7 @@ public class ArcaneAscension
 		proxy.init();
 
 		// Register my event handlers to the appropriate bus
-		MinecraftForge.EVENT_BUS.register(new ArcaneManaEventsHandler());
+		MinecraftForge.EVENT_BUS.register(new ArcaneEvents());
 		MinecraftForge.EVENT_BUS.register(new ArcaneEffectHandler());
 		// Register my gui to the network registry
 		NetworkRegistry.INSTANCE.registerGuiHandler(ArcaneAscension.instance, new ArcaneGuiHandler());
