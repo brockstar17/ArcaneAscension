@@ -13,6 +13,7 @@ public class ArcaneBlocks
 
 	// Start block declarations
 	public static Block ash_block;
+	public static Block arcane_altar;
 	// End block declarations
 
 	// Initialize blocks
@@ -20,6 +21,7 @@ public class ArcaneBlocks
 	public static void preInit() {
 
 		ash_block = new AshBlock("ash_block");
+		arcane_altar = new ArcaneAltar("arcane_altar");
 
 		registerBlocks();
 	}
@@ -27,6 +29,7 @@ public class ArcaneBlocks
 	// Register blocks with game registry
 	public static void registerBlocks() {
 		registerBlock(ash_block, new ItemBlock(ash_block));
+		registerBlock(arcane_altar, new ItemBlock(arcane_altar));
 	}
 
 	// Register the block. Forge requires that you also create an item from the block and register
@@ -40,6 +43,7 @@ public class ArcaneBlocks
 	// Register the block textures
 	public static void reigsterRenders() {
 		registerRender(ash_block);
+		registerRender(arcane_altar);
 	}
 
 	// Register itemblock texture

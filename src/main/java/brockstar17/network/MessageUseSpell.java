@@ -96,8 +96,10 @@ public class MessageUseSpell extends MessageBase<MessageUseSpell>
 				}
 
 				useSpell(spellId, world, pos, player, target);
-				mana.useMana(au.manaCosts[spellId]);
-				NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
+				if (!player.isCreative()) {
+					mana.useMana(au.manaCosts[spellId]);
+					NetworkHandler.sendTo(new MessageManaChange(mana.getMana()), (EntityPlayerMP) player);
+				}
 			}
 			else if (!mana.hasEnoughMana(au.manaCosts[spellId])) {
 				player.sendMessage(new TextComponentString("You do not have enough mana to use that spell!" + TextFormatting.DARK_AQUA));
