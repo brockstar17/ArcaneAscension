@@ -7,5 +7,6 @@ item.arcane_ash.name=Arcane Ash
 
 tile.ash_block.name=Ash Block
 tile.arcane_altar.name=Arcane Altar
+tile.arcane_pedastal.name=Arcane Pedestal
 
 potion.freezeEffect.name=Frozen

@@ -1,55 +1,37 @@
 package brockstar17.blocks;
 
-import brockstar17.Reference;
+import brockstar17.tileentity.BlockTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ArcaneBlocks
 {
 
-	// Start block declarations
-	public static Block ash_block;
-	public static Block arcane_altar;
-	// End block declarations
+	public static BlockBase arcane_altar;
 
-	// Initialize blocks
-	// Gets called during init, call it after items
-	public static void preInit() {
-
-		ash_block = new AshBlock("ash_block");
-		arcane_altar = new ArcaneAltar("arcane_altar");
-
-		registerBlocks();
+	public static void init() {
+		arcane_altar = register(new ArcaneAltar("arcane_altar"));
 	}
 
-	// Register blocks with game registry
-	public static void registerBlocks() {
-		registerBlock(ash_block, new ItemBlock(ash_block));
-		registerBlock(arcane_altar, new ItemBlock(arcane_altar));
-	}
-
-	// Register the block. Forge requires that you also create an item from the block and register
-	// that item. This is how the itemblock can be used in inventories.
-	private static void registerBlock(Block block, Item item) {
+	private static <T extends Block> T register(T block, ItemBlock itemBlock) {
 		GameRegistry.register(block);
-		item.setRegistryName(block.getRegistryName());
-		GameRegistry.register(item);
+		GameRegistry.register(itemBlock);
+
+		if (block instanceof BlockBase) {
+			((BlockBase) block).registerItemModel(itemBlock);
+		}
+
+		if (block instanceof BlockTileEntity) {
+			GameRegistry.registerTileEntity(((BlockTileEntity<?>) block).getTileEntityClass(), block.getRegistryName().toString());
+		}
+
+		return block;
 	}
 
-	// Register the block textures
-	public static void reigsterRenders() {
-		registerRender(ash_block);
-		registerRender(arcane_altar);
-	}
-
-	// Register itemblock texture
-	private static void registerRender(Block block) {
-		Item item = Item.getItemFromBlock(block); // The item from the block
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Reference.MODID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
-
+	private static <T extends Block> T register(T block) {
+		ItemBlock itemBlock = new ItemBlock(block);
+		itemBlock.setRegistryName(block.getRegistryName());
+		return register(block, itemBlock);
 	}
 }

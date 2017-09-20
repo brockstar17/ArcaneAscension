@@ -1,22 +1,39 @@
 package brockstar17.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.util.text.translation.I18n;
 
 /**
- * The client and server proxies will extend this class and use the abstract methods below. <br>
+ * The client proxy will extend this class and override the methods below. <br>
  * This allows for the separation of client-side and server-side code.
  * 
  * @author Brockstar17
  */
-public abstract class CommonProxy
+public class CommonProxy
 {
 
-	public abstract void preInit();
+	public void preInit() {
 
-	public abstract void init();
+	}
 
-	public abstract void postInit();
+	public void init() {
 
-	public abstract EntityPlayer getClientPlayer();
+	}
+
+	public void postInit() {
+
+	}
+
+	public EntityPlayer getClientPlayer() {
+		return null;
+	}
+
+	public void registerItemRenderer(Item item, int meta, String id) {
+	}
+
+	public String localize(String unlocalized, Object... args) {
+		return I18n.translateToLocalFormatted(unlocalized, args);
+	}
 
 }

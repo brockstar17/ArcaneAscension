@@ -22,8 +22,8 @@ import brockstar17.effects.cooldowns.LightningCD;
 import brockstar17.effects.cooldowns.RHealCD;
 import brockstar17.effects.cooldowns.WhirlwindCD;
 import brockstar17.events.ArcaneEffectHandler;
-import brockstar17.events.ArcaneGuiHandler;
 import brockstar17.events.ArcaneEvents;
+import brockstar17.events.ArcaneGuiHandler;
 import brockstar17.items.ArcaneItems;
 import brockstar17.network.NetworkHandler;
 import brockstar17.proxy.CommonProxy;
@@ -82,7 +82,8 @@ public class ArcaneAscension
 
 		// Register Items and Blocks
 		ArcaneItems.preInit();
-		ArcaneBlocks.preInit();
+		ArcaneBlocks.init();
+
 		// Run proxy pre initialization code
 		proxy.preInit();
 		// Initialize the network handler

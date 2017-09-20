@@ -1,6 +1,8 @@
 package brockstar17.network;
 
 import brockstar17.Reference;
+import brockstar17.network.terender.PacketRequestUpdateAltar;
+import brockstar17.network.terender.PacketUpdatedAltar;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -37,6 +39,8 @@ public class NetworkHandler
 		INSTANCE.registerMessage(MessageLearnSpell.class, MessageLearnSpell.class, 9, Side.CLIENT);
 		INSTANCE.registerMessage(MessageLearnSpell.class, MessageLearnSpell.class, 10, Side.SERVER);
 		INSTANCE.registerMessage(MessageSyncCooldown.class, MessageSyncCooldown.class, 11, Side.CLIENT);
+		INSTANCE.registerMessage(new PacketUpdatedAltar.Handler(), PacketUpdatedAltar.class, 12, Side.CLIENT);
+		INSTANCE.registerMessage(new PacketRequestUpdateAltar.Handler(), PacketRequestUpdateAltar.class, 13, Side.SERVER);
 	}
 
 	// Send to the server

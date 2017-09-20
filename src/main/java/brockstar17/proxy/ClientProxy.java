@@ -1,12 +1,20 @@
 package brockstar17.proxy;
 
+import brockstar17.ArcaneAscension;
 import brockstar17.Reference;
-import brockstar17.blocks.ArcaneBlocks;
 import brockstar17.client.KeyInputHandler;
 import brockstar17.client.Keybindings;
 import brockstar17.items.ArcaneItems;
+import brockstar17.tileentity.TileEntityAltar;
+import brockstar17.tileentity.TileEntityPedastal;
+import brockstar17.tileentity.render.AltarRenderer;
+import brockstar17.tileentity.render.PedastalRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -40,7 +48,9 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void init() {
 		ArcaneItems.registerRenders();
-		ArcaneBlocks.reigsterRenders();
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAltar.class, new AltarRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPedastal.class, new PedastalRenderer());
 	}
 
 	@Override
@@ -52,6 +62,17 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().player;
+	}
+
+	@Override
+	public void registerItemRenderer(Item item, int meta, String id) {
+
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(ArcaneAscension.prependModID(id), "inventory"));
+	}
+
+	@Override
+	public String localize(String unlocalized, Object... args) {
+		return I18n.format(unlocalized, args);
 	}
 
 }
