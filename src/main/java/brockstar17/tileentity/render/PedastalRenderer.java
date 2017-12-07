@@ -1,21 +1,47 @@
 package brockstar17.tileentity.render;
 
-import brockstar17.tileentity.TileEntityPedastal;
+import org.lwjgl.opengl.GL11;
+
+import brockstar17.tileentity.TileEntityPedestal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.ForgeHooksClient;
 
-public class PedastalRenderer extends TileEntitySpecialRenderer<TileEntityPedastal>
+public class PedastalRenderer extends TileEntitySpecialRenderer<TileEntityPedestal>
 {
 
 	@Override
-	public void renderTileEntityAt(TileEntityPedastal te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void renderTileEntityAt(TileEntityPedestal te, double x, double y, double z, float partialTicks, int destroyStage) {
 
-		super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
-		renderItem(new ItemStack(te.getItemOnPed()), x, y, z, partialTicks);
+		ItemStack stack = te.inventory.getStackInSlot(0);
+		if (!stack.isEmpty()) {
+			GlStateManager.enableRescaleNormal();
+			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
+			GlStateManager.enableBlend();
+			RenderHelper.enableStandardItemLighting();
+			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+			GlStateManager.pushMatrix();
+			double offset = Math.sin((te.getWorld().getTotalWorldTime() - te.lastChangeTime + partialTicks) / 8) / 8.0;
+			GlStateManager.translate(x + 0.5, y + .75 + offset, z + 0.5);
+			GlStateManager.rotate((te.getWorld().getTotalWorldTime() + partialTicks) * 4, 0, 1, 0);
+
+			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, te.getWorld(), null);
+			model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+
+			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+
+			GlStateManager.popMatrix();
+			GlStateManager.disableRescaleNormal();
+			GlStateManager.disableBlend();
+		}
 	}
 
 	private void renderItem(ItemStack stack, double x, double y, double z, float partialTicks) {

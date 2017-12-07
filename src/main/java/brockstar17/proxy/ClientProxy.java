@@ -6,7 +6,7 @@ import brockstar17.client.KeyInputHandler;
 import brockstar17.client.Keybindings;
 import brockstar17.items.ArcaneItems;
 import brockstar17.tileentity.TileEntityAltar;
-import brockstar17.tileentity.TileEntityPedastal;
+import brockstar17.tileentity.TileEntityPedestal;
 import brockstar17.tileentity.render.AltarRenderer;
 import brockstar17.tileentity.render.PedastalRenderer;
 import net.minecraft.client.Minecraft;
@@ -50,7 +50,7 @@ public class ClientProxy extends CommonProxy
 		ArcaneItems.registerRenders();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAltar.class, new AltarRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPedastal.class, new PedastalRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPedestal.class, new PedastalRenderer());
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class ArcaneUtils
 																											 // eyes
 			Entity pointedEntity = null; // The entity traced
 			float var9 = 1.0F; // Not sure, need to play around with this
-			@SuppressWarnings("unchecked")
+
 			List<Entity> list = mc.world.getEntitiesWithinAABBExcludingEntity(theRenderViewEntity, theViewBoundingBox.expand(lookvec.xCoord * var2, lookvec.yCoord * var2, lookvec.zCoord * var2).expand(var9, var9, var9)); // Get
 																																																							 // a
 																																																							 // list
